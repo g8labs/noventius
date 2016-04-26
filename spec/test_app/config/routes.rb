@@ -1,4 +1,3 @@
 Rails.application.routes.draw do
-
-  mount Nuntius::Engine => "/nuntius"
+  mount Nuntius::Engine => '/nuntius'
 end

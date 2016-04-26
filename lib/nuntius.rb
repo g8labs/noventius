@@ -1,5 +1,6 @@
-require "nuntius/engine"
-require "nuntius/report"
+require 'nuntius/engine'
+require 'nuntius/report'
 
 module Nuntius
+
 end

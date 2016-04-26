@@ -1,0 +1,134 @@
+AllCops:
+  RunRailsCops: true
+  Include:
+    - '**/Rakefile'
+    - '**/config.ru'
+  Exclude:
+    - '**/db/schema.rb'
+    - '**/db/migrate/**'
+    - 'tmp/**/*'
+    - 'bin/**'
+    - 'lib/domain_validator.rb'
+    - 'spec/tracking/**'
+
+Style/Documentation:
+  Description: Document classes and non-namespace modules.
+  Enabled: false
+
+Style/Encoding:
+  Description: Use UTF-8 as the source file encoding.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#utf-8
+  Enabled: false
+  EnforcedStyle: always
+  SupportedStyles:
+  - when_needed
+  - always
+
+Metrics/LineLength:
+  Description: Limit lines to 110 characters.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#80-character-limits
+  Enabled: true
+  Max: 110
+  AllowURI: true
+  URISchemes:
+  - http
+  - https
+
+# Supports --auto-correct
+Style/EmptyLinesAroundModuleBody:
+  Description: Keeps track of empty lines around module bodies.
+  Enabled: true
+  EnforcedStyle: empty_lines
+  SupportedStyles:
+  - empty_lines
+  - no_empty_lines
+
+# Supports --auto-correct
+Style/EmptyLinesAroundClassBody:
+  Description: Keeps track of empty lines around class bodies.
+  Enabled: true
+  EnforcedStyle: empty_lines
+  SupportedStyles:
+  - empty_lines
+  - no_empty_lines
+
+# Supports --auto-correct
+Style/EmptyLinesAroundBlockBody:
+  Description: Keeps track of empty lines around block bodies.
+  Enabled: true
+  EnforcedStyle: no_empty_lines
+  SupportedStyles:
+  - empty_lines
+  - no_empty_lines
+  Exclude:
+    - 'spec/**/*'
+
+Rails/HasAndBelongsToMany:
+  Description: Prefer has_many :through to has_and_belongs_to_many.
+  Enabled: false
+  Include:
+  - app/models/**/*.rb
+
+Rails/Validation:
+  Description: Use validates :attribute, hash of validations.
+  Enabled: false
+  Include:
+  - app/models/**/*.rb
+
+# Supports --auto-correct
+Style/WordArray:
+  Description: Use %w or %W for arrays of words.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#percent-w
+  Enabled: true
+  MinSize: 0
+  WordRegex: !ruby/regexp /\A[\p{Word}]+\z/
+  Exclude:
+    - 'db/**/*.rb'
+
+Style/ClassAndModuleChildren:
+  Description: Checks style of children classes and modules.
+  Enabled: false
+  EnforcedStyle: nested
+  SupportedStyles:
+  - nested
+  - compact
+
+Style/ClassVars:
+  Description: 'Avoid the use of class variables.'
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-class-vars'
+  Enabled: false
+
+Metrics/MethodLength:
+  Description: Avoid methods longer than 10 lines of code.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#short-methods
+  Enabled: true
+  CountComments: false
+  Max: 20
+  Exclude:
+    - 'db/**/*.rb'
+
+Metrics/AbcSize:
+  Description: A calculated magnitude based on number of assignments, branches, and conditions.
+  Enabled: true
+  Max: 30
+  Exclude:
+    - 'db/**/*.rb'
+
+Style/SingleLineBlockParams:
+  Description: Enforces the names of some block params.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#reduce-blocks
+  Enabled: false
+  Methods:
+  - reduce:
+    - a
+    - e
+  - inject:
+    - a
+    - e
+Style/BlockDelimiters:
+  Description: >-
+                Avoid using {...} for multi-line blocks (multiline chaining is
+                always ugly).
+                Prefer {...} over do...end for single-line blocks.
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#single-line-blocks'
+  Enabled: false
