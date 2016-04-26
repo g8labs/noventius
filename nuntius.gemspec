@@ -7,11 +7,10 @@ require "nuntius/version"
 Gem::Specification.new do |s|
   s.name        = "nuntius"
   s.version     = Nuntius::VERSION
-  s.authors     = ["Andres Pache"]
-  s.email       = ["apache90@gmail.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Nuntius."
-  s.description = "TODO: Description of Nuntius."
+  s.authors     = ["Andres Pache", "Martin Fernandez"]
+  s.email       = ["andres.pache@g8labs.co", "martin.fernandez@g8labs.co"]
+  s.summary     = "Reporting engine"
+  s.description = "Reporting engine"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
@@ -19,4 +18,5 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 4.2.6"
 
   s.add_development_dependency "pg"
+  s.add_development_dependency "rspec-rails", "~> 3.4.2"
 end
