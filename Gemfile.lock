@@ -142,3 +142,6 @@ DEPENDENCIES
   pg
   rspec-rails (~> 3.4.2)
   rubocop
+
+BUNDLED WITH
+   1.12.1

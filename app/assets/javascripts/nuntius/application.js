@@ -10,4 +10,6 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require jquery/dist/jquery.min
+//= require bootstrap/dist/js/bootstrap.min
 //= require_tree .

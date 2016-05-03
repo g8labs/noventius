@@ -1,0 +1,16 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href='#'>
+        Reports
+      </a>
+    </div>
+  </div>
+  <ul class="nav nav-tabs">
+    <%- @reports.each do |report| %>
+      <li class="<%= report == @report.class ? 'active' : '' %>">
+        <%= link_to report.name, report_path(name: report.name) %>
+      </li>
+    <%- end %>
+  </ul>
+</nav>
