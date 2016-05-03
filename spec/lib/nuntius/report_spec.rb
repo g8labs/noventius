@@ -98,6 +98,10 @@ RSpec.describe Nuntius::Report do
 
     it 'should call columns on result' do
       expect(ar_result).to receive(:columns)
+      subject
+    end
+
+    it 'should return the correct values' do
       expect(subject).to eq(columns)
     end
 
@@ -117,6 +121,10 @@ RSpec.describe Nuntius::Report do
 
     it 'should call columns on result' do
       expect(ar_result).to receive(:rows)
+      subject
+    end
+
+    it 'should return the correct values' do
       expect(subject).to eq(rows)
     end
 

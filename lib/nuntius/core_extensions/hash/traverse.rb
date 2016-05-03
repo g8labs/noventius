@@ -6,6 +6,9 @@ module Nuntius
 
       module Traverse
 
+        # Calculates de depth of a Hash
+        #
+        # @return [Integer] the hash's depth
         def depth
           1 + (each_value.map do |val|
             if val.is_a?(::Hash)
@@ -18,6 +21,10 @@ module Nuntius
           end.max || 0)
         end
 
+        # Returns all the keys existing at a given depth
+        #
+        # @param [Integer] the depth of the keys to retrive
+        # @return [Array] all the keys at the given depth
         def nth_level_children(n, c = 0)
           return nil if n < c += 1
           return each_pair.to_a if n == c
