@@ -11,7 +11,7 @@ require 'sprockets/railtie'
 Bundler.require(*Rails.groups)
 require 'nuntius'
 
-module TestApp
+module Dummy
 
   class Application < Rails::Application
 

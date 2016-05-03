@@ -8,7 +8,7 @@ AllCops:
     - '**/db/migrate/**'
     - 'tmp/**/*'
     - 'bin/**'
-    - 'spec/test_app/**/*'
+    - 'spec/dummy/**/*'
 
 Style/Documentation:
   Description: Document classes and non-namespace modules.
