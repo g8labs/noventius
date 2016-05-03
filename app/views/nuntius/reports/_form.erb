@@ -1,0 +1,9 @@
+<%= form_tag report_path(name: report.class.name), method: :get,  class: 'form-inline' do %>
+  <% report.filters.each do |filter| %>
+    <div class='form-group'>
+      <%= label_tag filter[:name], nil, class: 'control-label'  %>
+      <%= filter_tag filter, report, class: 'form-control' %>
+    </div>
+  <% end %>
+  <%= submit_tag 'Filter', class: 'btn btn-default' %>
+<% end %>

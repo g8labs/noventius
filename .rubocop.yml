@@ -8,8 +8,7 @@ AllCops:
     - '**/db/migrate/**'
     - 'tmp/**/*'
     - 'bin/**'
-    - 'lib/domain_validator.rb'
-    - 'spec/tracking/**'
+    - 'spec/test_app/**/*'
 
 Style/Documentation:
   Description: Document classes and non-namespace modules.
