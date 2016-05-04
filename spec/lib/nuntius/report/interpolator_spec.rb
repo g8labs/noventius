@@ -11,7 +11,7 @@ RSpec.describe Nuntius::Report::Interpolator do
 
     context 'when interpolation variable does not exist' do
 
-      let(:text) { 'The interpolation variable :unknown does not exist' }
+      let(:text) { 'The interpolation variable {unknown} does not exist' }
 
       it 'shodul raise NoMethodError error' do
         expect { subject }.to raise_error(NoMethodError)
@@ -31,7 +31,7 @@ RSpec.describe Nuntius::Report::Interpolator do
 
       context 'when there is one variable interpolation' do
 
-        let(:text) { 'SELECT * FROM t1 WHERE id IN :ids' }
+        let(:text) { 'SELECT * FROM t1 WHERE id IN {ids}' }
 
         it { should eq('SELECT * FROM t1 WHERE id IN [1, 2, 3]') }
 
@@ -39,7 +39,7 @@ RSpec.describe Nuntius::Report::Interpolator do
 
       context 'when there are two or more interpolation variables' do
 
-        let(:text) { 'SELECT * FROM t1 WHERE id IN :ids AND event_name = :event_name' }
+        let(:text) { 'SELECT * FROM t1 WHERE id IN {ids} AND event_name = {event_name}' }
 
         it { should eq('SELECT * FROM t1 WHERE id IN [1, 2, 3] AND event_name = event_1') }
 

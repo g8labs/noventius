@@ -15,8 +15,8 @@ module Nuntius
 
       module InstanceMethods
 
-        REGEX = /:\w+/
-        VARIABLE_REGEX = /(?::)(\w+)/
+        REGEX = /({\w+})+/
+        VARIABLE_REGEX = /(?:{)(\w+)(?:})/
 
         def interpolate(text)
           return unless text
