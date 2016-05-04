@@ -2,3 +2,13 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+
+.form-inline .form-group {
+  padding: 5px;
+  position: relative;
+  vertical-align: bottom;
+}
+
+.form-inline label {
+  display: block;
+}

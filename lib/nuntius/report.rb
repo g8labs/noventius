@@ -1,15 +1,15 @@
 require_relative 'report/dsl'
+require_relative 'report/interpolator'
 
 module Nuntius
 
   class Report
 
     include Dsl
+    include Interpolator
 
-    attr_reader :query_params
-
-    def initialize(query_params = {})
-      @query_params = query_params
+    def initialize(filter_params = {})
+      @filter_params = filter_params
     end
 
     def self.all
@@ -23,9 +23,8 @@ module Nuntius
     end
 
     def result
-      @result ||= ActiveRecord::Base.connection.exec_query(sql)
+      @result ||= ActiveRecord::Base.connection.exec_query(interpolate(sql))
     end
-    alias_method :execute, :result
 
     # [Array] Simple Column Structure
     # [Hash] Complex Column Structure

@@ -1,7 +1,8 @@
 class AReport < Nuntius::Report
 
   filter :andres, :text, value: 'Holaa', options: { class: 'hola' }
-  filter :juan, :date, options: { disabled: true }
+  filter :juan, :date
+  filter :juana, :datetime
   filter :qwqwee, :number, options: { max: 1 }
   filter :qwe, :select, options_tags: [%w(Hola Chau), 'Chau'], options: { include_blank: true }
   filter :d, :select, options_tags: :ids, options: { include_blank: true, require: true }
