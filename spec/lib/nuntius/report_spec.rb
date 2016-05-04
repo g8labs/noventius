@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Nuntius::Report do
 
-  it { should respond_to :query_params }
-
   describe 'ClassMethods' do
 
     describe '#all' do
@@ -22,12 +20,12 @@ RSpec.describe Nuntius::Report do
 
     describe '#initialize' do
 
-      subject { described_class.new(query_params) }
+      subject { described_class.new(filter_params) }
 
-      let(:query_params) { { foo: :bar } }
+      let(:filter_params) { { foo: :bar } }
 
-      it 'should assign the correct query_params' do
-        expect(subject.query_params).to eq(query_params)
+      it 'should assign the correct filter_params' do
+        expect(subject.filter_params).to eq(filter_params)
       end
 
     end

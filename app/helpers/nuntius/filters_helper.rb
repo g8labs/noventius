@@ -2,9 +2,11 @@ module Nuntius
 
   module FiltersHelper
 
+    SCOPE_KEY = :q
+
     def filter_tag(filter, _report, options = {})
       merge_filter_options(filter, options)
-      send("#{filter[:type]}_filter_tag", "q[#{filter[:name]}]", filter[:args])
+      send("#{filter[:type]}_filter_tag", scoped_name(filter[:name]), filter[:args])
     end
 
     def check_box_filter_tag(name, value: '1', checked: false, options: {})
@@ -88,6 +90,10 @@ module Nuntius
     end
 
     protected
+
+    def scoped_name(name)
+      "#{SCOPE_KEY}[#{name}]"
+    end
 
     def merge_filter_options(filter, options)
       (filter[:args][:options] ||= {}).each do |k, v|

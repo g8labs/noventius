@@ -10,8 +10,9 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require 'bootstrap/dist/css/bootstrap.min'
- *= require 'nuntius/reports'
+ *= require bootstrap/dist/css/bootstrap.min
+ *= require eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min
+ *= require nuntius/reports
  *= require_self
  */
 

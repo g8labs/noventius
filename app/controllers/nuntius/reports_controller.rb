@@ -11,13 +11,12 @@ module Nuntius
     end
 
     def show
-      @report.execute
     end
 
     protected
 
-    def query_params
-      params.fetch(:q, {})
+    def filter_params
+      @q ||= params.fetch(:q, {})
     end
 
     def set_reports
@@ -25,7 +24,7 @@ module Nuntius
     end
 
     def ensure_report
-      @report = report_class.new(query_params)
+      @report = report_class.new(filter_params)
     end
 
     def report_class
