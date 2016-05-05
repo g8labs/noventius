@@ -53,7 +53,7 @@ module Nuntius
           attr_reader :filter_params
 
           def filters
-            self.class.filters
+            self.class.filters.deep_dup
           end
 
         end

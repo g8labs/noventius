@@ -4,10 +4,12 @@ module Nuntius
 
   class ReportsController < ApplicationController
 
-    before_action :set_reports
+    helper_method :filter_params
+
     before_action :ensure_report, only: [:show]
 
     def index
+      reports
     end
 
     def show
@@ -17,10 +19,6 @@ module Nuntius
 
     def filter_params
       @q ||= params.fetch(:q, {})
-    end
-
-    def set_reports
-      @reports ||= Report.all
     end
 
     def ensure_report

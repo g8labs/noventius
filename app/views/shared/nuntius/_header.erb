@@ -7,7 +7,7 @@
     </div>
   </div>
   <ul class="nav nav-tabs">
-    <%- @reports.each do |report| %>
+    <%- reports.each do |report| %>
       <li class="<%= report == @report.class ? 'active' : '' %>">
         <%= link_to report.name, report_path(name: report.name) %>
       </li>

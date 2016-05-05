@@ -1,17 +1,9 @@
 <table class='table table-hover'>
   <thead>
     <% if report.complex_columns? %>
-      <!--
-        Columns live in odd(2n+1) levels of the Complex Column Structure(CCS), so the number of rows the thead
-        has is half the depth of the CCS (depth/2)
-      -->
-      <% (report.columns.depth / 2).times do |n| %>
+      <% number_of_rows_in_cct(report.columns).times do |n| %>
         <tr>
-          <!--
-            Given that the columns live in odd levels, we get all the childen(columns) on each odd level
-            to compose the row
-          -->
-          <% report.columns.nth_level_children(2*n+1).each do |col, options| %>
+          <% cells_for_cct_row(report.columns, n).each do |col, options| %>
             <th colspan='<%= options.fetch(:colspan, 1) %>' rowspan='<%= options.fetch(:rowspan, 1) %>'>
               <%= col %>
             </th>

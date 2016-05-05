@@ -4,12 +4,38 @@ module Nuntius
 
     SCOPE_KEY = :q
 
-    def filter_tag(filter, _report, options = {})
+    DEFAULT_CHECK_BOX_VALUE = '1'
+    DEFAULT_RADIO_BUTTON_VALUE = false
+
+    def filter_tag(filter, report, options = {})
       merge_filter_options(filter, options)
+      set_current_filter_value(filter, report)
+
       send("#{filter[:type]}_filter_tag", scoped_name(filter[:name]), filter[:args])
     end
 
-    def check_box_filter_tag(name, value: '1', checked: false, options: {})
+    def set_current_filter_value(filter, report)
+      current_value = report.filter_params[filter[:name]]
+
+      case filter[:type]
+      when :select
+        filter[:args][:option_tags] = prepare_select_option_tags(filter, report)
+      when :check_box
+        filter[:args][:checked] = current_value == (filter[:args][:value] || DEFAULT_CHECK_BOX_VALUE)
+      when :radio_button
+        filter[:args][:checked] = current_value == (filter[:args][:value] || DEFAULT_RADIO_BUTTON_VALUE)
+      when :text_area
+        filter[:args][:content] = current_value || filter[:args][:content]
+      else
+        filter[:args][:value] = current_value || filter[:args][:value]
+      end
+    end
+
+    def filter_value_field_name(filter_type)
+      method("#{filter_type}_filter_tag").parameters[1][-1]
+    end
+
+    def check_box_filter_tag(name, value: DEFAULT_CHECK_BOX_VALUE, checked: false, options: {})
       check_box_tag(name, value, checked, options)
     end
 
@@ -41,7 +67,7 @@ module Nuntius
       phone_field_tag(name, value, options)
     end
 
-    def radio_button_filter_tag(name, value: false, checked: false, options: {})
+    def radio_button_filter_tag(name, value: DEFAULT_RADIO_BUTTON_VALUE, checked: false, options: {})
       radio_button_tag(name, value, checked, options)
     end
 
@@ -53,16 +79,8 @@ module Nuntius
       search_field_tag(name, value, options)
     end
 
-    def select_filter_tag(name, options_tags: nil, options: {})
-      options_tags = @report.send(options_tags) if options_tags.is_a?(Symbol)
-
-      options_tags = if options_tags.is_a?(Array) && options_tags.size == 2
-                       options_for_select(*options_tags)
-                     else
-                       options_for_select(options_tags)
-                     end
-
-      select_tag(name, options_tags, options)
+    def select_filter_tag(name, option_tags: nil, options: {})
+      select_tag(name, option_tags, options)
     end
 
     def telephone_filter_tag(name, value: nil, options: {})
@@ -110,6 +128,36 @@ module Nuntius
         end
       end
       filter[:args][:options].merge!(options)
+    end
+
+    def prepare_select_option_tags(filter, report)
+      option_tags = filter[:args][:option_tags]
+      option_tags = option_tags.is_a?(Symbol) ? report.send(option_tags) : option_tags
+      current_value = report.filter_params[filter[:name]]
+
+      if option_tags.is_a?(String)
+        option_tags.html_safe
+      elsif option_tags.is_a?(Array)
+        if option_tags.size == 1 || option_tags.size == 2
+          if option_tags.size == 2
+            option_tags[1] = current_value || filter[:args][:option_tags]
+          else
+            option_tags << current_value
+          end
+          options_for_select(*option_tags)
+        elsif option_tags.size == 3 || option_tags.size == 4
+          if option_tags.size == 4
+            option_tags[3] = current_value || filter[:args][:option_tags]
+          else
+            option_tags << current_value
+          end
+          options_from_collection_for_select(*option_tags)
+        else
+          fail ArgumentError, 'option_tags can only be a String, an Array(max size 4) or a Symbol.'
+        end
+      else
+        fail ArgumentError, 'option_tags can only be a String, an Array(max size 4) or a Symbol.'
+      end
     end
 
   end

@@ -4,11 +4,11 @@ class AReport < Nuntius::Report
   filter :juan, :date
   filter :juana, :datetime
   filter :qwqwee, :number, options: { max: 1 }
-  filter :qwe, :select, options_tags: [%w(Hola Chau), 'Chau'], options: { include_blank: true }
-  filter :d, :select, options_tags: :ids, options: { include_blank: true, require: true }
+  filter :qwe, :select, option_tags: [%w(Hola Chau), 'Chau'], options: { include_blank: true }
+  filter :d, :select, option_tags: :ids, options: { include_blank: true, require: true }
 
   def ids
-    [:a, :b, :c]
+    [[:a, :b, :c], :a]
   end
 
   def columns
