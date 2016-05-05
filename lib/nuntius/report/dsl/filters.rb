@@ -4,7 +4,7 @@ module Nuntius
 
     module Dsl
 
-      module Filter
+      module Filters
 
         def self.included(base)
           base.extend ClassMethods
@@ -29,10 +29,6 @@ module Nuntius
               args: args
             }
             define_filter_accessors(name, type)
-          end
-
-          def filter_names
-            filters.collect { |f| f[:name] }
           end
 
           protected

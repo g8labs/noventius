@@ -15,5 +15,22 @@
 //= require moment/min/moment-with-locales.min
 //= require moment-timezone/builds/moment-timezone-with-data.min
 //= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
-//= require nuntius/reports
+//= require jquery-validation/dist/jquery.validate.min
+//= require jquery-validation/dist/additional-methods.min
 //= require_self
+//= require nuntius/reports
+
+var DATE_FORMAT = 'DD/MM/YYYY';
+var DATETIME_FORMAT = 'DD/MM/YYYY HH:mm';
+
+(function() {
+
+  $.validator.addMethod('date', function(value, element) {
+    return this.optional( element ) || moment(value, DATE_FORMAT, true).isValid();
+  });
+
+  $.validator.addMethod('datetime', function(value, element) {
+    return this.optional( element ) || moment(value, DATETIME_FORMAT, true).isValid();
+  });
+
+})();

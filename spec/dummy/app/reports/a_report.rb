@@ -7,6 +7,10 @@ class AReport < Nuntius::Report
   filter :qwe, :select, option_tags: [%w(Hola Chau), 'Chau'], options: { include_blank: true }
   filter :d, :select, option_tags: :ids, options: { include_blank: true, require: true }
 
+  validate :andres, rules: { required: true }
+  validate :juan, rules: { required: true, date: true }
+  validate :juana, rules: { required: true, datetime: true }
+
   def ids
     [[:a, :b, :c], :a]
   end

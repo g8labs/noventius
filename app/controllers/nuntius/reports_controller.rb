@@ -4,8 +4,6 @@ module Nuntius
 
   class ReportsController < ApplicationController
 
-    helper_method :filter_params
-
     before_action :ensure_report, only: [:show]
 
     def index
@@ -16,10 +14,6 @@ module Nuntius
     end
 
     protected
-
-    def filter_params
-      @q ||= params.fetch(:q, {})
-    end
 
     def ensure_report
       @report = report_class.new(filter_params)

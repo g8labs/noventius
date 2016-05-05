@@ -1,8 +1,11 @@
 <script>
-  var filter_params = <%= raw filter_params.to_json %>;
+  var SCOPE_KEY = '<%= Nuntius::FormsHelper::SCOPE_KEY %>';
+  var FILTER_PARAMS = <%= raw scope_params(filter_params).to_json %>;
+  var VALIDATIONS = <%= raw compile_validations(report.validations).to_json %>
+  // var VALIDATION_MESSAGES =
 </script>
 
-<%= form_tag report_path(name: report.class.name), method: :get,  class: 'form-inline' do %>
+<%= form_tag report_path(name: report.class.name), id: 'filter-form', method: :get, class: 'form-inline' do %>
   <% report.filters.each do |filter| %>
     <div class='form-group'>
       <%= label_tag filter[:name], nil, class: 'control-label'  %>
