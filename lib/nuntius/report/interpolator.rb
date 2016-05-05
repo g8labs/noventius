@@ -23,10 +23,22 @@ module Nuntius
 
           text.scan(REGEX).flatten.each do |var|
             var_name = var.match(VARIABLE_REGEX)[1]
-            text.gsub!(var, send(var_name.to_sym).to_s)
+            value = send(var_name.to_sym)
+
+            text.gsub!(var, escape(value))
           end
 
           text
+        end
+
+        protected
+
+        def escape(value)
+          if value.respond_to?(:map)
+            "(#{value.map { |v| escape(v) }.join(', ')})"
+          else
+            ActiveRecord::Base.connection.quote(value)
+          end
         end
 
       end

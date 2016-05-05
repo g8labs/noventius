@@ -33,7 +33,7 @@ RSpec.describe Nuntius::Report::Interpolator do
 
         let(:text) { 'SELECT * FROM t1 WHERE id IN {ids}' }
 
-        it { should eq('SELECT * FROM t1 WHERE id IN [1, 2, 3]') }
+        it { should eq('SELECT * FROM t1 WHERE id IN (1, 2, 3)') }
 
       end
 
@@ -41,7 +41,7 @@ RSpec.describe Nuntius::Report::Interpolator do
 
         let(:text) { 'SELECT * FROM t1 WHERE id IN {ids} AND event_name = {event_name}' }
 
-        it { should eq('SELECT * FROM t1 WHERE id IN [1, 2, 3] AND event_name = event_1') }
+        it { should eq('SELECT * FROM t1 WHERE id IN (1, 2, 3) AND event_name = \'event_1\'') }
 
       end
 
