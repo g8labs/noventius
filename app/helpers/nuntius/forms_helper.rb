@@ -24,6 +24,18 @@ module Nuntius
       aux
     end
 
+    def compile_filters(filters)
+      aux = {}
+      filters.each do |f|
+        scoped_name = scope_name(f[:name])
+        aux[scoped_name] = {
+          type: f[:type],
+          options: f[:options]
+        }
+      end
+      aux
+    end
+
   end
 
 end

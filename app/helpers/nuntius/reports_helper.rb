@@ -2,7 +2,7 @@ module Nuntius
 
   module ReportsHelper
 
-    # ColumnNameNodes are found in odd(2n+1) levels of the ComplexColumnTree, so the number of rows the
+    # ColumnNameNodes are found in odd(2n+1) levels of the ComplexColumnTree, so the number of rows in
     # thead has is half the depth of the ComplexColumnTree. (depth/2)
     def number_of_rows_in_cct(cct)
       cct.depth / 2

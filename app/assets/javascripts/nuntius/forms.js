@@ -13,7 +13,7 @@
         $error = $(error);
         $element = $(element);
         $(error).addClass('control-label');
-        $element.parent().append(error);
+        $element.closest('.form-group').append(error);
       },
       rules: VALIDATIONS['rules'],
       messages: VALIDATIONS['messages']

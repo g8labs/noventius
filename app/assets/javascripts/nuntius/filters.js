@@ -9,11 +9,12 @@
       var $el = $(el);
       var filterName = $el.attr('name');
 
-      $el.datetimepicker({
-        format: DATE_FORMAT,
-      });
+      if(FILTERS[filterName]['options']['icon']) {
+        $el = $el.parent();
+      }
+      $el.datetimepicker({ format: DATE_FORMAT });
 
-      setDateTimePickerDate(el, FILTER_PARAMS[filterName], DATE_FORMAT);
+      setDateTimePickerDate($el, FILTER_PARAMS[filterName], DATE_FORMAT);
     });
 
     // Initialize all DateTimePickers
@@ -21,12 +22,12 @@
       var $el = $(el);
       var filterName = $el.attr('name');
 
-      $el.datetimepicker({
-        format: DATETIME_FORMAT,
-        sideBySide: true
-      });
+      if(FILTERS[filterName]['options']['icon']) {
+        $el = $el.parent();
+      }
+      $el.datetimepicker({ format: DATETIME_FORMAT, sideBySide: true });
 
-      setDateTimePickerDate(el, FILTER_PARAMS[filterName], DATETIME_FORMAT);
+      setDateTimePickerDate($el, FILTER_PARAMS[filterName], DATETIME_FORMAT);
     });
 
   });

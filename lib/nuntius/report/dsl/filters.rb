@@ -13,6 +13,8 @@ module Nuntius
 
         module ClassMethods
 
+          RESERVED_FILTER_ARGS = %i(icon)
+
           FILTER_TYPES = %i(check_box color date datetime email month number phone radio_button range search
                             select telephone text_area text url week)
 
@@ -23,15 +25,25 @@ module Nuntius
           def filter(name, type, args = {})
             fail "FilterType: [#{type}] not yet implemented." unless valid_filter_type?(type)
 
+            reserved_args, clean_args = split_filter_args(args)
+
             filters << {
               name: name.to_sym,
               type: type,
-              args: args
+              args: clean_args,
+              options: reserved_args || {}
             }
+
             define_filter_accessors(name, type)
           end
 
           protected
+
+          def split_filter_args(args)
+            clean_args = args.except(*RESERVED_FILTER_ARGS)
+            reserved_args = args.except(*clean_args.keys)
+            [reserved_args, clean_args]
+          end
 
           def valid_filter_type?(type)
             FILTER_TYPES.include?(type.to_sym)
