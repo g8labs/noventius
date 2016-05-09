@@ -18,11 +18,7 @@ module Nuntius
           end
 
           def validate(name, rules: {}, messages: {})
-            validations << {
-              name: name.to_sym,
-              rules: rules,
-              messages: messages
-            }
+            validations << Validation.new(name, rules, messages)
           end
 
         end

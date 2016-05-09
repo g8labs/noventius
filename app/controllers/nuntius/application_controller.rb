@@ -1,5 +1,3 @@
-require_dependency 'nuntius/concerns/filter_params'
-
 module Nuntius
 
   class ApplicationController < ActionController::Base

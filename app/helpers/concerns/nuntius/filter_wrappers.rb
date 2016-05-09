@@ -5,6 +5,10 @@ module Nuntius
     DEFAULT_CHECK_BOX_VALUE = '1'
     DEFAULT_RADIO_BUTTON_VALUE = false
 
+    def self.included(base)
+      base.extend self
+    end
+
     def check_box_filter_tag(name, value: DEFAULT_CHECK_BOX_VALUE, checked: false, options: {})
       check_box_tag(name, value, checked, options)
     end

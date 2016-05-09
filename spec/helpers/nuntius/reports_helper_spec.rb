@@ -1,19 +1,28 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the ReportsHelper. For example:
-#
-# describe ReportsHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
-module Nuntius
+RSpec.describe Nuntius::ReportsHelper, type: :helper do
 
-  RSpec.describe ReportsHelper, type: :helper do
-    pending "add some examples to (or delete) #{__FILE__}"
+  include ComplexColumnsExamples
+
+  let(:cct) { complex_columns_1 }
+
+  describe '#number_of_rows_in_cct' do
+
+    subject { helper.number_of_rows_in_cct(cct) }
+
+    it { should eq(2) }
+
+  end
+
+  describe '#cells_for_cct_row' do
+
+    let(:rows_in_cct) { helper.number_of_rows_in_cct(cct) }
+    let(:n) { Array(0...rows_in_cct).sample }
+
+    subject { helper.cells_for_cct_row(cct, n) }
+
+    it { should match_array(send("complex_columns_1_level_#{2 * n + 1}")) }
+
   end
 
 end
