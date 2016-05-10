@@ -1,102 +1,69 @@
+# rubocop:disable all
 module Nuntius
 
   module FiltersHelper
 
-    SCOPE_KEY = :q
+    include Nuntius::FilterWrappers
 
-    def filter_tag(filter, _report, options = {})
+    def filter_tag(filter, report, options = {})
       merge_filter_options(filter, options)
-      send("#{filter[:type]}_filter_tag", scoped_name(filter[:name]), filter[:args])
+      set_current_filter_value(filter, report)
+
+      send(:"#{filter.type}_filter_tag", scope_name(filter.name), filter.args)
     end
 
-    def check_box_filter_tag(name, value: '1', checked: false, options: {})
-      check_box_tag(name, value, checked, options)
+    def set_current_filter_value(filter, report)
+      filter_args = filter.args
+      current_value = report.filter_params[filter.name]
+
+      case filter.type
+      when :select
+        filter_args[:option_tags] = compile_select_option_tags(filter, report)
+      when :check_box
+        filter_args[:checked] = current_value == (filter_args[:value] || DEFAULT_CHECK_BOX_VALUE)
+      when :radio_button
+        filter_args[:checked] = current_value == (filter_args[:value] || DEFAULT_RADIO_BUTTON_VALUE)
+      when :text_area
+        filter_args[:content] = current_value || filter_args[:content]
+      else
+        filter_args[:value] = current_value || filter_args[:value]
+      end
     end
 
-    def color_filter_tag(name, value: nil, options: {})
-      color_field_tag(name, value, options)
-    end
+    def compile_select_option_tags(filter, report)
+      option_tags = filter.args[:option_tags]
+      option_tags = option_tags.is_a?(Symbol) ? report.send(option_tags) : option_tags
+      current_value = report.filter_params[filter.name]
 
-    def date_filter_tag(name, value: nil, options: {})
-      date_field_tag(name, value, options)
-    end
-
-    def datetime_filter_tag(name, value: nil, options: {})
-      datetime_field_tag(name, value, options)
-    end
-
-    def email_filter_tag(name, value: nil, options: {})
-      datetime_field_tag(name, value, options)
-    end
-
-    def month_filter_tag(name, value: nil, options: {})
-      month_field_tag(name, value, options)
-    end
-
-    def number_filter_tag(name, value: nil, options: {})
-      number_field_tag(name, value, options)
-    end
-
-    def phone_filter_tag(name, value: nil, options: {})
-      phone_field_tag(name, value, options)
-    end
-
-    def radio_button_filter_tag(name, value: false, checked: false, options: {})
-      radio_button_tag(name, value, checked, options)
-    end
-
-    def range_filter_tag(name, value: nil, options: {})
-      range_field_tag(name, value, options)
-    end
-
-    def search_filter_tag(name, value: nil, options: {})
-      search_field_tag(name, value, options)
-    end
-
-    def select_filter_tag(name, options_tags: nil, options: {})
-      options_tags = @report.send(options_tags) if options_tags.is_a?(Symbol)
-
-      options_tags = if options_tags.is_a?(Array) && options_tags.size == 2
-                       options_for_select(*options_tags)
-                     else
-                       options_for_select(options_tags)
-                     end
-
-      select_tag(name, options_tags, options)
-    end
-
-    def telephone_filter_tag(name, value: nil, options: {})
-      text_field_tag(name, value, options)
-    end
-
-    def text_area_filter_tag(name, content: nil, options: {})
-      text_area_tag(name, content, options)
-    end
-
-    def text_filter_tag(name, value: nil, options: {})
-      text_field_tag(name, value, options)
-    end
-
-    def time_filter_tag(name, value: nil, options: {})
-      time_field_tag(name, value, options)
-    end
-
-    def url_filter_tag(name, value: nil, options: {})
-      url_field_tag(name, value, options)
-    end
-
-    def week_filter_tag(name, value: nil, options: {})
-      week_field_tag(name, value, options)
+      if option_tags.is_a?(String)
+        option_tags.html_safe
+      elsif option_tags.is_a?(Array)
+        if option_tags.size == 1 || option_tags.size == 2
+          if option_tags.size == 2
+            option_tags[1] = current_value || filter.args[:option_tags]
+          else
+            option_tags << current_value
+          end
+          options_for_select(*option_tags)
+        elsif option_tags.size == 3 || option_tags.size == 4
+          if option_tags.size == 4
+            option_tags[3] = current_value || filter.args[:option_tags]
+          else
+            option_tags << current_value
+          end
+          options_from_collection_for_select(*option_tags)
+        else
+          fail ArgumentError, 'option_tags can only be a String, an Array(max size 4) or a Symbol.'
+        end
+      else
+        fail ArgumentError, 'option_tags can only be a String, an Array(max size 4) or a Symbol.'
+      end
     end
 
     protected
 
-    def scoped_name(name)
-      "#{SCOPE_KEY}[#{name}]"
-    end
-
     def merge_filter_options(filter, options)
-      (filter[:args][:options] ||= {}).each do |k, v|
+      (filter.args[:options] ||= {}).each do |k, v|
         opt = options.delete(k)
         next unless opt
 
@@ -109,9 +76,10 @@ module Nuntius
           v.merge!(opt)
         end
       end
-      filter[:args][:options].merge!(options)
+      filter.args[:options].merge!(options)
     end
 
   end
 
 end
+# rubocop:enable all

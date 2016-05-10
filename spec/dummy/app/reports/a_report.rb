@@ -1,14 +1,18 @@
 class AReport < Nuntius::Report
 
-  filter :andres, :text, value: 'Holaa', options: { class: 'hola' }
-  filter :juan, :date
-  filter :juana, :datetime
+  filter :dasda, :text, value: 'Holaa', options: { class: 'hola' }, icon: 'flash'
+  filter :juan, :date, icon: 'flash'
+  filter :juana, :datetime, icon: 'calendar'
   filter :qwqwee, :number, options: { max: 1 }
-  filter :qwe, :select, options_tags: [%w(Hola Chau), 'Chau'], options: { include_blank: true }
-  filter :d, :select, options_tags: :ids, options: { include_blank: true, require: true }
+  filter :qwe, :select, option_tags: [%w(Hola Chau), 'Chau'], options: { include_blank: true }
+  filter :d, :select, option_tags: :ids, options: { include_blank: true }
+
+  validate :dasda, rules: { required: true }
+  validate :juan, rules: { required: true, date: true }
+  validate :juana, rules: { required: true, datetime: true }
 
   def ids
-    [:a, :b, :c]
+    [[:a, :b, :c], :a]
   end
 
   def columns

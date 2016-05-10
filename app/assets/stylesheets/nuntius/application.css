@@ -12,10 +12,22 @@
  *
  *= require bootstrap/dist/css/bootstrap.min
  *= require eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min
- *= require nuntius/reports
  *= require_self
+ *= require nuntius/reports
  */
 
 .navbar {
   border-bottom: none;
+}
+
+.has-error.form-control {
+  border-color: red;
+}
+
+.has-error.form-control:focus {
+  border-color: red;
+}
+
+.has-error.control-label {
+  color: red;
 }

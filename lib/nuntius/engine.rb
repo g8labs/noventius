@@ -4,6 +4,8 @@ module Nuntius
 
     isolate_namespace Nuntius
 
+    config.autoload_paths << root.join('app/helpers/concerns/')
+
     config.generators do |g|
       g.test_framework :rspec
     end
