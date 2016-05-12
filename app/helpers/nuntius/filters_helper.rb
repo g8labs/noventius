@@ -40,14 +40,14 @@ module Nuntius
       elsif option_tags.is_a?(Array)
         if option_tags.size == 1 || option_tags.size == 2
           if option_tags.size == 2
-            option_tags[1] = current_value || filter.args[:option_tags]
+            option_tags[1] = current_value || option_tags[1]
           else
             option_tags << current_value
           end
           options_for_select(*option_tags)
         elsif option_tags.size == 3 || option_tags.size == 4
           if option_tags.size == 4
-            option_tags[3] = current_value || filter.args[:option_tags]
+            option_tags[3] = current_value || option_tags[3]
           else
             option_tags << current_value
           end
