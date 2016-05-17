@@ -14,7 +14,7 @@ module Nuntius
         module ClassMethods
 
           def filters
-            @filters ||= []
+            (@filters ||= []).sort_by! { |f| f.options[:priority] }
           end
 
           def filter(name, type, args = {})
