@@ -14,7 +14,7 @@ RSpec.describe Nuntius::Filter do
   end
 
   it 'should have reserved the following args' do
-    expect(described_class::RESERVED_ARGS).to eq(%i(icon))
+    expect(described_class::RESERVED_ARGS).to eq(%i(icon priority))
   end
 
   it { should respond_to :name }
@@ -39,7 +39,7 @@ RSpec.describe Nuntius::Filter do
       context 'when it receives dirty_args' do
 
         let(:clean_args) { { class: 'css-class' } }
-        let(:reserved_args) { { icon: :value } }
+        let(:reserved_args) { { priority: 0, icon: :value } }
         let(:dirty_args) { clean_args.merge(reserved_args) }
 
         before { options.merge!(dirty_args: dirty_args) }
@@ -65,7 +65,7 @@ RSpec.describe Nuntius::Filter do
     let(:name) { 'filter_name' }
     let(:type) { described_class::TYPES.sample }
     let(:clean_args) { { class: 'css-class' } }
-    let(:reserved_args) { { icon: :value } }
+    let(:reserved_args) { { priority: 0, icon: :value } }
     let(:dirty_args) { clean_args.merge(reserved_args) }
 
     before { options.merge!(name: name, type: type, dirty_args: dirty_args) }

@@ -18,8 +18,8 @@ RSpec.describe Nuntius::FormsHelper, type: :helper do
 
     let(:compiled_filters) {
       {
-        'q[name_1]' => { type: :text, options: { icon: :value } },
-        'q[name_2]' => { type: :text, options: {} }
+        'q[name_1]' => { type: :text, options: { priority: 0, icon: :value } },
+        'q[name_2]' => { type: :text, options: { priority: 0 } }
       }
     }
 

@@ -19,11 +19,24 @@ RSpec.describe Nuntius::Report::Dsl::Filters do
 
     context 'when there are filters' do
 
-      let(:filter) { FactoryGirl.create(:filter) }
-      before { dummy_class.filter filter.name, filter.type, filter.args.merge(filter.options) }
+      let(:filter_1) { FactoryGirl.create(:filter, dirty_args: { priority: 1 }) }
+      let(:filter_2) { FactoryGirl.create(:filter) }
 
-      it 'should have 1 item' do
-        expect(subject.count).to eq(1)
+      before {
+        dummy_class.filter filter_1.name, filter_1.type, filter_1.args.merge(filter_1.options)
+        dummy_class.filter filter_2.name, filter_2.type, filter_2.args.merge(filter_2.options)
+      }
+
+      it 'should have 2 items' do
+        expect(subject.count).to eq(2)
+      end
+
+      it 'should have filter_2 first' do
+        expect(subject.first.name).to eq(filter_2.name)
+      end
+
+      it 'should have filter_1 second' do
+        expect(subject.second.name).to eq(filter_1.name)
       end
 
     end

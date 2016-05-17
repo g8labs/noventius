@@ -2,7 +2,8 @@ module Nuntius
 
   class Filter
 
-    RESERVED_ARGS = %i(icon)
+    RESERVED_ARGS = %i(icon priority)
+    DEFAULT_RESERVED_ARGS = { priority: 0 }
     TYPES = %i(check_box color date datetime email month number phone radio_button range search select
                telephone text_area text url week)
 
@@ -14,7 +15,7 @@ module Nuntius
       @name = name.to_sym
       @type = type.to_sym
       @args = clean_args(dirty_args)
-      @options = reserved_args(dirty_args)
+      @options = DEFAULT_RESERVED_ARGS.merge(reserved_args(dirty_args))
     end
 
     def to_js
