@@ -8,6 +8,16 @@ module Nuntius
     include Dsl
     include Interpolator
 
+    class << self
+
+      attr_reader :tab_title
+
+      def title(title)
+        @tab_title = title
+      end
+
+    end
+
     def initialize(filter_params = {})
       @filter_params = filter_params
     end
