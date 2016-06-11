@@ -1,6 +1,8 @@
 require 'nuntius/core_extensions'
 require 'nuntius/engine'
 require 'nuntius/report'
+require 'nuntius/result'
+require 'nuntius/loader'
 require 'nuntius/filter'
 require 'nuntius/validation'
 require 'nuntius/extensions/date_query'

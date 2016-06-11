@@ -2,14 +2,12 @@ module Nuntius
 
   class ApplicationController < ActionController::Base
 
-    include FilterParams
+    protect_from_forgery with: :exception
 
     helper_method :reports
 
-    protect_from_forgery with: :exception
-
     def reports
-      @reports ||= Report.all
+      @reports ||= Nuntius::Loader.report_classes.map(&:new)
     end
 
   end

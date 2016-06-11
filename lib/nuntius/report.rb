@@ -30,35 +30,28 @@ module Nuntius
       self.class._description
     end
 
-    def self.all
-      Dir.glob(File.expand_path('app/reports/*.rb', Rails.root)).map do |file|
-        file[%r{app\/reports\/(.*)\.rb}, 1].classify.constantize
-      end
+    def title
+      self.class._title
     end
 
-    def complex_columns?
-      columns.is_a?(::Hash)
+    def name
+      self.class.name
     end
 
-    def result
-      @result ||= ActiveRecord::Base.connection.exec_query(interpolate(sql))
+    def created_result?(result)
+      return false if result.nil?
+
+      result.report.class == self.class
     end
 
-    # [Array] Simple Column Structure
-    # [Hash] Complex Column Structure
-    # {
-    #   'name' => {
-    #     colspan: 1,
-    #     rowspan: 2,
-    #     children: {}
-    #   }
-    # }
-    def columns # rubocop:disable Rails/Delegate
-      result.columns
-    end
+    def execute
+      sql_query = interpolate(sql)
+      sql_result = ActiveRecord::Base.connection.exec_query(sql_query)
 
-    def rows # rubocop:disable Rails/Delegate
-      result.rows
+      Result.new(
+        sql_result: sql_result,
+        report: self
+      )
     end
 
     def sql

@@ -8,8 +8,8 @@
   </div>
   <ul class="nav nav-tabs">
     <%- reports.each do |report| %>
-      <li class="<%= report == @report.class ? 'active' : '' %>">
-        <%= link_to report._title, report_path(name: report.name) %>
+      <li class="<%= report.class == @report.class ? 'active' : '' %>">
+        <%= link_to report.title, report_path(name: report.name) %>
       </li>
     <%- end %>
   </ul>

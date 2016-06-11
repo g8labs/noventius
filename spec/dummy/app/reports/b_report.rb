@@ -27,10 +27,7 @@ class BReport < Nuntius::Report
   end
 
   def sql
-    <<-SQL
-      SELECT *
-      FROM users;
-    SQL
+    ''
   end
 
 end
