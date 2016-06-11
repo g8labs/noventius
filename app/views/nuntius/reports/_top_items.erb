@@ -1,0 +1,30 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      <a data-toggle="collapse" data-parent="#accordion" href="#collapse-description">Description</a>
+    </h4>
+  </div>
+  <div id="collapse-description" class="panel-collapse collapse">
+    <div class="panel-body">
+      <p>
+        <%= report.description %>
+      </p>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      <a data-toggle="collapse" data-parent="#accordion"  href="#collapse-sql">SQL</a>
+    </h4>
+  </div>
+  <div id="collapse-sql" class="panel-collapse collapse">
+    <div class="panel-body">
+      <pre>
+        <code>
+          <%= report.sql.strip %>
+        </code>
+      </pre>
+    </div>
+  </div>
+</div>
