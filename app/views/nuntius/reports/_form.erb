@@ -4,7 +4,7 @@
   var VALIDATIONS = <%= raw compile_validations(report.validations).to_json %>
 </script>
 
-<%= form_tag report_path(name: report.class.name), id: 'filter-form', method: :get, class: 'form-inline' do %>
+<%= form_tag execute_report_path(name: report.class.name), id: 'filter-form', method: :get, class: 'form-inline' do %>
   <% report.filters.each do |filter| %>
     <div class='form-group'>
       <%= label_tag filter.name, nil, class: 'control-label'  %>

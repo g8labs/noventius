@@ -1,30 +1,32 @@
-<table class='table table-hover'>
-  <thead>
-    <% if report.complex_columns? %>
-      <% number_of_rows_in_cct(report.columns).times do |n| %>
+<% if result.present? %>
+  <table class='table table-hover'>
+    <thead>
+      <% if result.complex_columns? %>
+        <% number_of_rows_in_cct(result.columns).times do |n| %>
+          <tr>
+            <% cells_for_cct_row(result.columns, n).each do |col, options| %>
+              <th colspan='<%= options.fetch(:colspan, 1) %>' rowspan='<%= options.fetch(:rowspan, 1) %>'>
+                <%= col %>
+              </th>
+            <% end %>
+          </tr>
+        <% end %>
+      <% else %>
         <tr>
-          <% cells_for_cct_row(report.columns, n).each do |col, options| %>
-            <th colspan='<%= options.fetch(:colspan, 1) %>' rowspan='<%= options.fetch(:rowspan, 1) %>'>
-              <%= col %>
-            </th>
+          <% result.columns.each do |col| %>
+            <th><%= col %></th>
           <% end %>
         </tr>
       <% end %>
-    <% else %>
-      <tr>
-        <% report.columns.each do |col| %>
-          <th><%= col %></th>
-        <% end %>
-      </tr>
-    <% end %>
-  </thead>
-  <tbody>
-    <% report.rows.each do |row| %>
-      <tr>
-        <% row.each do |cell| %>
-          <td><%= cell %></td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% result.rows.each do |row| %>
+        <tr>
+          <% row.each do |cell| %>
+            <td><%= cell %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
