@@ -17,6 +17,8 @@
 //= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
 //= require jquery-validation/dist/jquery.validate.min
 //= require jquery-validation/dist/additional-methods.min
+//= require highlight-js/src/highlight
+
 //= require_self
 //= require nuntius/reports
 
@@ -24,6 +26,9 @@ var DATE_FORMAT = 'DD/MM/YYYY';
 var DATETIME_FORMAT = 'DD/MM/YYYY HH:mm';
 
 (function() {
+
+  // Initialize syntax highlighting. This is used for SQL
+  hljs.initHighlightingOnLoad();
 
   $.validator.addMethod('date', function(value, element) {
     return this.optional( element ) || moment(value, DATE_FORMAT, true).isValid();

@@ -1,4 +1,7 @@
 <div>
+  <section>
+    <%= render partial: 'top_items', locals: { report: @report } %>
+  </section>
   <section class='well well-sm'>
     <%= render partial: 'form', locals: { report: @report } %>
   </section>

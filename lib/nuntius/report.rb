@@ -10,16 +10,24 @@ module Nuntius
 
     class << self
 
-      attr_reader :tab_title
+      attr_reader :_title, :_description
 
       def title(title)
-        @tab_title = title
+        @_title = title
+      end
+
+      def description(description)
+        @_description = description
       end
 
     end
 
     def initialize(filter_params = {})
       @filter_params = filter_params
+    end
+
+    def description
+      self.class._description
     end
 
     def self.all
