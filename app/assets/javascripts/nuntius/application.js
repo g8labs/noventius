@@ -17,8 +17,10 @@
 //= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
 //= require jquery-validation/dist/jquery.validate.min
 //= require jquery-validation/dist/additional-methods.min
+//= require select2-dist/dist/js/select2.full
 //= require_self
 //= require nuntius/reports
+//= require_tree ./filters
 
 var DATE_FORMAT = 'DD/MM/YYYY';
 var DATETIME_FORMAT = 'DD/MM/YYYY HH:mm';

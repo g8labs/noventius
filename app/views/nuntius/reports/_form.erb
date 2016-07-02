@@ -6,7 +6,7 @@
 
 <%= form_tag report_path(name: report.class.name), id: 'filter-form', method: :get, class: 'form-inline' do %>
   <% report.filters.each do |filter| %>
-    <div class='form-group'>
+    <div class='<%= class_for_filter_wrapper(filter) %>'>
       <%= label_tag filter.name, nil, class: 'control-label'  %>
       <%= render partial: 'filter', locals: { filter: filter, report: report } %>
     </div>

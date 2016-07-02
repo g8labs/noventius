@@ -12,3 +12,11 @@
 .form-inline label {
   display: block;
 }
+
+.select-filter-wrapper {
+  width: 14em;
+}
+
+select.nuntius-filter {
+  width: 100%;
+}

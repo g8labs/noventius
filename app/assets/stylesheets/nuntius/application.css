@@ -12,6 +12,7 @@
  *
  *= require bootstrap/dist/css/bootstrap.min
  *= require eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min
+ *= require select2-dist/dist/css/select2
  *= require_self
  *= require nuntius/reports
  */
