@@ -12,6 +12,26 @@ module Nuntius
       send(:"#{filter.type}_filter_tag", scope_name(filter.name), filter.args)
     end
 
+    def class_for_filter_wrapper(filter)
+      classes = ['form-group']
+
+      if filter.type == :select
+        classes << 'select-filter-wrapper'
+      end
+
+      classes.join(' ')
+    end
+
+    def class_for_filter(filter)
+      classes = ['nuntius-filter']
+
+      unless filter.type == :select
+        classes << 'form-control'
+      end
+
+      classes.join(' ')
+    end
+
     def set_current_filter_value(filter, report)
       filter_args = filter.args
       current_value = report.filter_params[filter.name]

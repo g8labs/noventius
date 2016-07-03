@@ -4,6 +4,7 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "eonasdan-bootstrap-datetimepicker": "^4.17.37",
-    "jquery-validation": "^1.15.0"
+    "jquery-validation": "^1.15.0",
+    "select2-dist": "^4.0.3"
   }
 }

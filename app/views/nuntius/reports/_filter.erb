@@ -1,10 +1,10 @@
 <% if filter.options[:icon].present? %>
   <div class="input-group">
-    <%= filter_tag filter, report, class: 'form-control' %>
+    <%= filter_tag filter, report, class: class_for_filter(filter) %>
     <span class="input-group-addon">
         <span class="glyphicon glyphicon-<%= filter.options[:icon] %>"></span>
     </span>
   </div>
 <% else %>
-  <%= filter_tag filter, report, class: 'form-control' %>
+  <%= filter_tag filter, report, class: class_for_filter(filter) %>
 <% end %>

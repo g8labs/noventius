@@ -17,7 +17,7 @@ $ bundle
 
 Or install it yourself as:
 ```bash
-$ gem install nexus
+$ gem install nuntius
 ```
 
 ## Usage
@@ -29,6 +29,15 @@ class UsersReport < Nuntius::Report
 
 end
 ```
+
+Then you need to mount the nuntius engine by adding this to the application's config/routes.rb:
+
+```ruby
+  mount Nuntius::Engine => '/nuntius'
+```
+
+After that you can access an use the reports by navigating to:
+`http://localhost:3000/nuntius/reports`
 
 ### Query
 
