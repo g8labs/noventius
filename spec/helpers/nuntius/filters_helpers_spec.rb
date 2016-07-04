@@ -19,13 +19,13 @@ RSpec.describe Nuntius::FiltersHelper, type: :helper do
     subject { helper.filter_tag(filter, report, options) }
 
     before do
-      allow(helper).to receive(:merge_filter_options).with(filter, options)
-      allow(helper).to receive(:set_current_filter_value).with(filter, report)
-      allow(helper).to receive(:"#{filter.type}_filter_tag")
+      allow(helper).to receive(:merge_filter_options).and_return({})
+      allow(helper).to receive(:set_current_filter_value).and_return({})
+      allow(helper).to receive(:"#{filter.type}_filter_tag").and_return({})
     end
 
     it 'should call merge_filter_options' do
-      expect(helper).to receive(:merge_filter_options).with(filter, options)
+      expect(helper).to receive(:merge_filter_options).with(filter, options, anything)
       subject
     end
 

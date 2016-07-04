@@ -5,11 +5,14 @@ module Nuntius
 
     include Nuntius::FilterWrappers
 
-    def filter_tag(filter, report, options = {})
-      merge_filter_options(filter, options)
-      set_current_filter_value(filter, report)
+    RESERVED_OPTIONS = [:dependent]
 
-      send(:"#{filter.type}_filter_tag", scope_name(filter.name), filter.args)
+    def filter_tag(filter, report, options = {})
+      tag_options = set_current_filter_value(filter, report)
+      tag_options = merge_filter_options(filter, options, tag_options)
+      tag_options = add_filter_options(filter, report, tag_options)
+
+      send(:"#{filter.type}_filter_tag", scope_name(filter.name), tag_options)
     end
 
     def class_for_filter_wrapper(filter)
@@ -33,27 +36,35 @@ module Nuntius
     end
 
     def set_current_filter_value(filter, report)
-      filter_args = filter.args
+      tag_options = filter.args.dup
       current_value = report.filter_params[filter.name]
 
       case filter.type
       when :select
-        filter_args[:option_tags] = compile_select_option_tags(filter, report)
+        tag_options[:option_tags] = compile_select_option_tags(filter, report)
       when :check_box
-        filter_args[:checked] = current_value == (filter_args[:value] || DEFAULT_CHECK_BOX_VALUE)
+        tag_options[:checked] = current_value == (tag_options[:value] || DEFAULT_CHECK_BOX_VALUE)
       when :radio_button
-        filter_args[:checked] = current_value == (filter_args[:value] || DEFAULT_RADIO_BUTTON_VALUE)
+        tag_options[:checked] = current_value == (tag_options[:value] || DEFAULT_RADIO_BUTTON_VALUE)
       when :text_area
-        filter_args[:content] = current_value || filter_args[:content]
+        tag_options[:content] = current_value || tag_options[:content]
       else
-        filter_args[:value] = current_value || filter_args[:value]
+        tag_options[:value] = current_value || tag_options[:value]
       end
+
+      tag_options
     end
 
     def compile_select_option_tags(filter, report)
       option_tags = filter.args[:option_tags]
       option_tags = option_tags.is_a?(Symbol) ? report.send(option_tags) : option_tags
       current_value = report.filter_params[filter.name]
+
+      if filter.args[:dependent].present? && option_tags.is_a?(Hash)
+        return ''
+      elsif filter.args[:dependent].present?
+        fail ArgumentError, 'when a dependent select option_tags can only be a Hash.'
+      end
 
       if option_tags.is_a?(String)
         option_tags.html_safe
@@ -82,8 +93,10 @@ module Nuntius
 
     protected
 
-    def merge_filter_options(filter, options)
-      (filter.args[:options] ||= {}).each do |k, v|
+    def merge_filter_options(filter, options, tag_options)
+      tag_options.delete_if { |k, _| RESERVED_OPTIONS.include?(k) }
+
+      (tag_options[:options] ||= {}).each do |k, v|
         opt = options.delete(k)
         next unless opt
 
@@ -96,7 +109,35 @@ module Nuntius
           v.merge!(opt)
         end
       end
-      filter.args[:options].merge!(options)
+      tag_options[:options].merge!(options)
+
+      tag_options
+    end
+
+    def add_filter_options(filter, report, tag_options)
+      tag_options = (tag_options || {}).dup
+
+      if filter.type == :select
+        include_blank = (filter.args[:options] || {})[:include_blank]
+
+        tag_options[:options].deep_merge!(data: { include_blank: include_blank })
+      end
+
+      if filter.type == :select && filter.args[:dependent].present?
+        options = filter.args[:option_tags]
+        options = options.is_a?(Symbol) ? report.send(options) : options
+        current_value = report.filter_params[filter.name]
+
+        options = options.inject({}) do |result, (key, value)|
+          result.merge(Array(key).join('_!_') => value)
+        end
+
+        tag_options[:options].deep_merge!(disabled: true,
+                                          data: { dependent: filter.args[:dependent],
+                                                  options: options, current_value: current_value })
+      end
+
+      tag_options
     end
 
   end
