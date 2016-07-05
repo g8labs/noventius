@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.rdoc']
 
   s.add_dependency 'rails', '~> 4.2'
+  s.add_dependency 'jquery-tablesorter', '~> 1.21', '>= 1.21.3'
+  s.add_dependency 'momentjs-rails', '~> 2.11', '>= 2.11.1'
 
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'rubocop'
