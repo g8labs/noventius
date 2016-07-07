@@ -26,6 +26,7 @@ function handleSelectChange(filter, clear) {
 function clearDependentSelect($filter) {
   $filter.html('').select2({data: null});
   $filter.prop('disabled', true);
+  handleSelectChange($filter, true);
 }
 
 function updateDependentSelect($filter, dependencies) {
@@ -60,9 +61,10 @@ function updateDependentSelect($filter, dependencies) {
   }
 
   $filter.html('').select2(selectOptions);
+  handleSelectChange($filter, false);
 
   if (currentValue != null && typeof currentValue != 'undefined') {
-    $filter.val(currentValue).trigger("change");
+    $filter.val(currentValue).trigger('change');
   }
 }
 
