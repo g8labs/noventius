@@ -1,4 +1,5 @@
 require_relative 'dsl/filters'
+require_relative 'dsl/columns'
 require_relative 'dsl/validations'
 
 module Nuntius
@@ -15,6 +16,7 @@ module Nuntius
       module ClassMethods
 
         include Filters::ClassMethods
+        include Columns::ClassMethods
         include Validations::ClassMethods
 
       end
@@ -22,6 +24,7 @@ module Nuntius
       module InstanceMethods
 
         include Filters::InstanceMethods
+        include Columns::InstanceMethods
         include Validations::InstanceMethods
 
       end

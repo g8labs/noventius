@@ -1,44 +1,28 @@
 class AReport < Nuntius::Report
 
-  filter :dasda, :text, value: 'Holaa', options: { class: 'hola' }, icon: 'flash'
+  column :date, :datetime,  label: 'Date', html_options: { rowspan: 2 }
+  columns_group :offer_1, [column(:event_1, :string, label: 'Event_1'),
+                           column(:event_2, :string, label: 'Event_2'),
+                           column(:event_3, :string, label: 'Event_3')],
+                label: 'Offer_1', html_options: { colspan: 3, rowspan: 1, }
+  columns_group :offer_1, [column(:event_1, :string, label: 'Event_1'),
+                           column(:event_2, :string, label: 'Event_2'),
+                           column(:event_3, :string, label: 'Event_3')], label: 'Offer_1',
+                html_options: { colspan: 3, rowspan: 1, }
+
+  filter :flash_with_options, :text, value: 'hi', options: { class: 'css-class' }, icon: 'flash'
   filter :juan, :date, icon: 'flash'
   filter :juana, :datetime, icon: 'calendar'
   filter :qwqwee, :number, options: { max: 1 }
   filter :qwe, :select, option_tags: [%w(Hola Chau), 'Chau'], options: { include_blank: true }
   filter :d, :select, option_tags: :ids, options: { include_blank: true }
 
-  validate :dasda, rules: { required: true }
+  validate :flash_with_options, rules: { required: true }
   validate :juan, rules: { required: true, date: true }
   validate :juana, rules: { required: true, datetime: true }
 
   def ids
     [[:a, :b, :c], :a]
-  end
-
-  def columns
-    {
-      'Date' => {
-        rowspan: 2
-      },
-      'Offer_1' => {
-        colspan: 3,
-        rowspan: 1,
-        children: {
-          'Event_1' => {},
-          'Event_2' => {},
-          'Event_3' => {}
-        }
-      },
-      'Offer_2' => {
-        colspan: 3,
-        rowspan: 1,
-        children: {
-          'Event_1' => {},
-          'Event_2' => {},
-          'Event_3' => {}
-        }
-      }
-    }
   end
 
   def rows

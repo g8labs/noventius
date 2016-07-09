@@ -28,25 +28,16 @@ module Nuntius
       end
     end
 
-    def complex_columns?
-      columns.is_a?(::Hash)
-    end
-
     def result
       @result ||= ActiveRecord::Base.connection.exec_query(interpolate(sql))
     end
 
-    # [Array] Simple Column Structure
-    # [Hash] Complex Column Structure
-    # {
-    #   'name' => {
-    #     colspan: 1,
-    #     rowspan: 2,
-    #     children: {}
-    #   }
-    # }
-    def columns # rubocop:disable Rails/Delegate
-      result.columns
+    def columns
+      columns = super
+
+      columns = result.columns.map { |column| Column.new(column, :string) } unless columns.any?
+
+      columns
     end
 
     def rows # rubocop:disable Rails/Delegate

@@ -116,6 +116,7 @@ module Nuntius
 
     def add_filter_options(filter, report, tag_options)
       tag_options = (tag_options || {}).dup
+      tag_options[:options] ||= {}
 
       if filter.type == :select
         include_blank = (filter.args[:options] || {})[:include_blank]

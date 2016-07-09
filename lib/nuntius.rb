@@ -1,7 +1,8 @@
-require 'nuntius/core_extensions'
 require 'nuntius/engine'
 require 'nuntius/report'
 require 'nuntius/filter'
+require 'nuntius/column'
+require 'nuntius/columns_group'
 require 'nuntius/validation'
 require 'nuntius/extensions/date_query'
 

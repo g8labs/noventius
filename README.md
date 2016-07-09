@@ -56,6 +56,84 @@ class UsersReport < Nuntius::Report
 end
 ```
 
+### Columns
+
+By default the columns for the report are inferred based on the columns returned by the query and
+treated as strings when it comes to display and sorting.
+But you can also define in advance what columns the report will have, **The number of columns
+defined needs to match the number of elements for every row of the result**, here is an
+example:
+
+```ruby
+class UsersReport < Nuntius::Report
+
+  column :id, :integer, label: 'Id', html_options: { rowspan: 2, colspan: 1 }
+  column :name, :string,  label: -> { self.name.to_s.humanize  }
+  column :created_at, :datetime
+
+end
+```
+
+#### Supported types
+- string
+- integer
+- float
+- datetime
+- date
+- nested
+
+#### Columns groups
+
+Sometimes we want to group several columns under a common header, this can be done using
+columns groups:
+
+ ```ruby
+class UsersReport < Nuntius::Report
+ 
+  column :id, :integer, label: 'Id', html_options: { rowspan: 2, colspan: 1 }
+  columns_group :offer_1,
+                [column(:event_1, :string, label: 'Event_1'),
+                 column(:event_2, :string, label: 'Event_2'),
+                 column(:event_3, :string, label: 'Event_3')],
+                label: 'Offer_1', html_options: { colspan: 3, rowspan: 1, }
+ 
+end
+ ```
+
+#### Dynamic columns
+
+There are some columns that might depend on the result of the current query in order to be present,
+for this case the `dynamic_columns` helper can be used to generate those.
+
+ ```ruby
+class UsersReport < Nuntius::Report
+ 
+  column :id, :integer, label: 'Id', html_options: { rowspan: 2 }
+  dynamic_columns :role_users_columns
+  column :created_at, :datetime, html_options: { rowspan: 2 }
+   
+  filter :role_id, :select, option_tags: :roles_for_select
+
+  def roles_for_select
+    [Role.all.collect { |role| [role.name, role.id] }, nil]
+  end
+
+  def role_users_columns
+    return [] unless role_id
+
+    Role.find(role_id).users.map do |user|
+      columns_group(:role_user,
+                    [column(:id, :integer),
+                     column(:name, :integer)])
+                    label: "${user.role.name [#{user.name}]}", html_options: { colspan: 2 })
+    end
+  end
+ 
+ end
+ ```
+
+What ever the `role_users_columns` returns will we placed in the columns list in the correct order.
+
 ### Filters
 
 Many times, reports need some input from the user. This simple DSL will allow you to add filters in reports easily.
@@ -87,10 +165,14 @@ For this filter you need to provide a method name that when executed returns the
 available values for the dropdown.
 
 ```ruby
-filter :role_id, :select, option_tags: :roles_for_select
+class UsersReport < Nuntius::Report
 
-def roles_for_select
-  [Role.all.collect { |role| [role.name, role.id] }, nil]
+  filter :role_id, :select, option_tags: :roles_for_select
+
+  def roles_for_select
+    [Role.all.collect { |role| [role.name, role.id] }, nil]
+  end
+
 end
 ```
 
