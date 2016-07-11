@@ -30,34 +30,6 @@ RSpec.describe Nuntius::Report do
 
     end
 
-    describe '#complex_columns?' do
-
-      subject { described_class.new.complex_columns? }
-
-      before { allow_any_instance_of(described_class).to receive(:columns).and_return(return_value) }
-
-      context 'when #columns return an Array' do
-
-        let(:return_value) { [] }
-
-        it 'should return false' do
-          expect(subject).to be false
-        end
-
-      end
-
-      context 'when #columns return a Hash' do
-
-        let(:return_value) { {} }
-
-        it 'should be true' do
-          expect(subject).to be true
-        end
-
-      end
-
-    end
-
     describe '#result' do
 
       subject { report.result }
@@ -84,23 +56,70 @@ RSpec.describe Nuntius::Report do
 
   describe '#columns' do
 
-    subject { described_class.new.columns }
+    let(:report) do
+      Class.new(Nuntius::Report) do
 
-    let(:columns) { %w(Col1 Col2 Col3) }
-    let(:ar_result) { double(:activerecord_result) }
+        column :date,                         :datetime,  label: 'Date', html_options: { class: 'date' }
+        column :offer_hit,                    :integer,   label: -> { name.to_s.humanize }
+        column :mobile_verification,          :integer,   label: -> { name.to_s.humanize }
+        column :mobile_verification_failure,  :integer,   label: -> { name.to_s.humanize }
+        column :mobile_subscription,          :integer,   label: -> { name.to_s.humanize }
+        column :mobile_subscription_failure,  :integer,   label: -> { name.to_s.humanize }
+        column :conversion_rate,              :string,    label: 'Conversion rate'
 
-    before do
-      allow_any_instance_of(described_class).to receive(:result).and_return(ar_result)
-      allow(ar_result).to receive(:columns).and_return(columns)
+        def sql
+          User.all.to_sql
+        end
+      end.new
     end
 
-    it 'should call columns on result' do
-      expect(ar_result).to receive(:columns)
-      subject
+    it 'returns the expected columns names' do
+      expect(report.columns.map(&:name)).to match(%i(date offer_hit mobile_verification
+                                                     mobile_verification_failure mobile_subscription
+                                                     mobile_subscription_failure conversion_rate))
     end
 
-    it 'should return the correct values' do
-      expect(subject).to eq(columns)
+    it 'returns the expected columns types' do
+      expect(report.columns.map(&:type)).to match(%i(datetime integer integer integer integer
+                                                     integer string))
+    end
+
+    it 'returns the expected columns labels' do
+      expect(report.columns.map(&:label)).to match(['Date', 'Offer hit', 'Mobile verification',
+                                                    'Mobile verification failure', 'Mobile subscription',
+                                                    'Mobile subscription failure', 'Conversion rate'])
+    end
+
+    it 'returns the expected columns html options' do
+      expect(report.columns.map(&:html_options)).to match([{ class: 'date' },
+                                                           {},
+                                                           {},
+                                                           {},
+                                                           {},
+                                                           {},
+                                                           {}])
+    end
+
+    context 'when using the columns given by the result' do
+      let(:report) do
+        Class.new(Nuntius::Report) do
+          def sql
+            User.all.to_sql
+          end
+        end.new
+      end
+
+      it 'returns the columns names from the query result' do
+        expect(report.columns.map(&:name)).to match(%i(id name role_id created_at updated_at))
+      end
+
+      it 'returns string for all columns' do
+        expect(report.columns.map(&:type)).to match(%i(string string string string string))
+      end
+
+      it 'returns the columns names as labels' do
+        expect(report.columns.map(&:label)).to match(%w(id name role_id created_at updated_at))
+      end
     end
 
   end
