@@ -5,13 +5,22 @@
 </script>
 
 <%= form_tag report_path(name: report.class.name), id: 'filter-form', method: :get, class: 'form-inline' do %>
+  <%= hidden_field_tag :format, :html %>
+
   <% report.filters.each do |filter| %>
     <div class='<%= class_for_filter_wrapper(filter) %>'>
       <%= label_tag filter.name, nil, class: 'control-label'  %>
       <%= render partial: 'filter', locals: { filter: filter, report: report } %>
     </div>
   <% end %>
-  <div class='form-group'>
-    <%= submit_tag 'Filter', class: 'btn btn-success' %>
+  <div>
+    <div class='form-group pull-right'>
+      <%= submit_tag 'Filter', class: 'btn btn-success' %>
+      <%= link_to '#', class: 'btn btn-default download' do %>
+        <i class='glyphicon glyphicon-download-alt'></i>
+        Download
+      <% end %>
+    </div>
+    <div class='clearfix'></div>
   </div>
 <% end %>

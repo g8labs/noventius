@@ -147,4 +147,41 @@ RSpec.describe Nuntius::Report do
 
   end
 
+  describe '#to' do
+
+    let(:report) do
+      Class.new(Nuntius::Report) do
+
+        column :date,                         :datetime,  label: 'Date', html_options: { class: 'date' }
+        column :offer_hit,                    :integer,   label: -> { name.to_s.humanize }
+        column :mobile_verification,          :integer,   label: -> { name.to_s.humanize }
+        column :mobile_verification_failure,  :integer,   label: -> { name.to_s.humanize }
+        column :mobile_subscription,          :integer,   label: -> { name.to_s.humanize }
+        column :mobile_subscription_failure,  :integer,   label: -> { name.to_s.humanize }
+        column :conversion_rate,              :string,    label: 'Conversion rate'
+
+        def sql
+          User.all.to_sql
+        end
+      end.new
+    end
+
+    context 'when csv format' do
+      it 'returns a valid csv' do
+        expect {
+          CSV.parse(report.to(:csv))
+        }.to_not raise_error
+      end
+    end
+
+    context 'when an invalid format' do
+      it 'raises an error' do
+        expect {
+          report.to(:invalid)
+        }.to raise_error(NotImplementedError)
+      end
+    end
+
+  end
+
 end
