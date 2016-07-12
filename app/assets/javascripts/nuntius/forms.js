@@ -1,12 +1,18 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
 (function(){
 
   var FORM_SELECTOR = '#filter-form';
 
-  $(document).on('ready page:load', function(){
+  function submitWithFormat(form, event, format) {
+    event.preventDefault();
+    event.stopPropagation();
 
-    $(FORM_SELECTOR).validate({
+    form.find('input[name=format]').val(format);
+    form.submit();
+  }
+
+  $(document).on('ready page:load', function(){
+    var $form = $(FORM_SELECTOR);
+    $form.validate({
       errorClass: 'has-error has-feedback',
       validClass: 'has-success has-feedback',
       errorPlacement: function(error, element) {
@@ -17,6 +23,14 @@
       },
       rules: VALIDATIONS['rules'],
       messages: VALIDATIONS['messages']
+    });
+
+    $form.on('click', 'input[name=commit]', function(e) {
+      submitWithFormat($form, e, 'html');
+    });
+
+    $form.on('click', '.download', function(e) {
+      submitWithFormat($form, e, 'csv');
     });
 
   });

@@ -1,5 +1,6 @@
 require_relative 'report/dsl'
 require_relative 'report/interpolator'
+require_relative 'serializers/csv'
 
 module Nuntius
 
@@ -42,6 +43,15 @@ module Nuntius
 
     def rows # rubocop:disable Rails/Delegate
       result.rows
+    end
+
+    def to(format)
+      case format
+      when :csv
+        Serializers::Csv.new(self).generate
+      else
+        fail NotImplementedError, "No serializer found for: #{format}"
+      end
     end
 
     def sql

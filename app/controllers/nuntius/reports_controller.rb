@@ -11,6 +11,10 @@ module Nuntius
     end
 
     def show
+      respond_to do |format|
+        format.html
+        format.csv { render text: @report.to(:csv) }
+      end
     end
 
     protected
