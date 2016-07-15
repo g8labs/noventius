@@ -3,11 +3,12 @@ module Nuntius
   module ColumnsHelper
 
     def column_table_header_tag(column)
-      content_tag(:th,      column.label,
-                  colspan:  column.html_options.fetch(:colspan, 1),
-                  rowspan:  column.html_options.fetch(:rowspan, 1),
-                  class:    class_for_column_header(column),
-                  data:     data_for_column_header(column))
+      options = column.html_options.deep_merge(colspan: column.html_options.fetch(:colspan, 1),
+                                               rowspan: column.html_options.fetch(:rowspan, 1),
+                                               class:   class_for_column_header(column),
+                                               data:    data_for_column_header(column))
+
+      content_tag(:th, column.label, options)
     end
 
     def number_of_header_levels(columns)
@@ -24,11 +25,13 @@ module Nuntius
     end
 
     def class_for_column_header(column)
-      if column.is_a?(Column)
-        'column-header'
-      elsif column.is_a?(ColumnsGroup)
-        'column-group-header'
-      end
+      css_class = if column.is_a?(Column)
+                    'column-header'
+                  elsif column.is_a?(ColumnsGroup)
+                    'column-group-header'
+                  end
+
+      [column.html_options[:class], css_class].compact.join(' ')
     end
 
     def data_for_column_header(column)
