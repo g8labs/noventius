@@ -2,5 +2,6 @@
 // All this logic will automatically be available in application.js.
 //= require nuntius/filters
 //= require nuntius/forms
-//= require nuntius/tables
+//= require nuntius/columns
+//= require nuntius/nested
 //= require_tree ./filters

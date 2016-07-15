@@ -6,13 +6,16 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <header><%= render partial: 'shared/nuntius/header' %> </header>
+  <header>
+    <%= render partial: 'shared/nuntius/header' %>
+  </header>
   <main>
     <div class='container-fluid'>
+      <%= flash_alert %>
       <%= yield %>
     </div>
   </main>
   <footer></footer>
-  <%= javascript_include_tag "nuntius/application" %>
+  <%= javascript_include_tag 'nuntius/application' %>
 </body>
 </html>

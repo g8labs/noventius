@@ -1,68 +1,109 @@
 require 'rails_helper'
 
-module Nuntius
+RSpec.describe Nuntius::ReportsController do
+  routes { Nuntius::Engine.routes }
+  render_views
 
-  RSpec.describe ReportsController, type: :controller do
-    routes { Nuntius::Engine.routes }
-    render_views
+  describe '#index' do
 
-    let(:params) { {} }
+    it 'returns a success response' do
+      get :index
 
-    describe '#index' do
+      expect(response).to be_success
+    end
 
-      subject { get :index, params }
+    it 'assigns all the reports to @reports' do
+      get :index
 
-      it 'should be success' do
-        subject
-        expect(response).to have_http_status(:success)
+      expect(assigns(:reports)).to match_array([AReport, BReport])
+    end
+
+  end
+
+  describe '#show' do
+
+    let(:params) { { name: report_name } }
+
+    context 'when the report exists' do
+
+      let(:report_name) { 'AReport' }
+
+      it 'returns a success response' do
+        get :show, params
+
+        expect(response).to be_success
       end
 
-      it 'should asign the right reports' do
-        subject
+      it 'assigns all the reports to @reports' do
+        get :show, params
+
         expect(assigns(:reports)).to match_array([AReport, BReport])
+      end
+
+      it 'assigns the expected report to @report' do
+        get :show, params
+
+        expect(assigns(:report)).to be_a(AReport)
       end
 
     end
 
-    describe '#show' do
+    context 'when the report does not exist' do
 
-      subject { get :show, params }
+      let(:report_name) { 'NonexistentReport' }
 
-      context 'when name param is present' do
+      it 'redirects to reports path' do
+        get :show, params
 
-        before { params.merge!(name: report_name) }
+        expect(response).to redirect_to(reports_path)
+      end
 
-        context 'when report does not exist' do
+      it 'sets a flash alert message' do
+        get :show, params
 
-          let(:report_name) { 'UnexistentReport' }
+        expect(flash[:alert]).to eq('Report not found')
+      end
 
-          it 'should be error' do
-            expect { subject }.to raise_error(NameError)
-          end
+    end
 
-        end
+  end
 
-        context 'when reports does exist' do
+  describe '#nested' do
 
-          let(:report_name) { 'AReport' }
+    let(:params) { { name: report_name } }
 
-          it 'should be success' do
-            subject
-            expect(response).to have_http_status(:success)
-          end
+    context 'when the report exists' do
 
-          it 'should asign the right reports' do
-            subject
-            expect(assigns(:reports)).to match_array([AReport, BReport])
-          end
+      let(:report_name) { 'AReport' }
 
-          it 'should asign the right reports' do
-            subject
-            expect(assigns(:report)).to be_a(report_name.constantize)
-          end
+      it 'returns a success response' do
+        get :nested, params
 
-        end
+        expect(response).to be_success
+      end
 
+      it 'assigns the expected report to @report' do
+        get :nested, params
+
+        expect(assigns(:report)).to be_a(AReport)
+      end
+
+    end
+
+    context 'when the report does not exist' do
+
+      let(:report_name) { 'NonexistentReport' }
+
+      it 'redirects to reports path' do
+        get :nested, params
+
+        expect(response).to redirect_to(reports_path)
+      end
+
+      it 'sets a flash alert message' do
+        get :nested, params
+
+        expect(flash[:alert]).to eq('Report not found')
       end
 
     end

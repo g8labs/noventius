@@ -80,7 +80,6 @@ end
 - float
 - datetime
 - date
-- nested
 
 #### Columns groups
 
@@ -210,15 +209,66 @@ def symbols_for_select
 end
 ```
 
-### Validations
-TODO
+### Nested reports
 
-### Columns
+When the user selects a row its possible to display a new report using data from that row as
+filters.
+For instance in a report that shows users registrations grouped by month, day or hour, it can be
+really helpful that when a user selects a row it shows the registrations for every hour of that
+particular day but keeping all other filters.
+This can be done using the nested report feature, **only one nested report is supported per report**.
+
+You can customize the options for the nested report by providing either a block or a symbol in the
+`:filters` option of the nested report. This method needs to to receive the selected row and can
+use the selected filters of the parent report.
+
+```ruby
+class UsersReport < Nuntius::Report
+
+  filter :start_time, :datetime
+  filter :end_time, :datetime
+  filter :group_by, :select, option_tags: :groups_for_select
+
+  validate :start_time, rules: { required: true }, messages: { required: 'Provide an start time' }
+  validate :end_time, rules: { required: true }, messages: { required: 'Provide an end time' }
+
+  nest_report UsersReport, filters: :nested_filters, if: -> { group_by.present? && grop_by != 'hour' }
+
+  def nested_filters(selected_row)
+    selected_date = DateTime.parse(selected_row[3])
+    nested_group, start_time, end_time = if group_by == 'month'
+                                           ['day', selected_date.at_beginning_of_month.to_s(:db),
+                                            selected_date.at_end_of_month.to_s(:db)]
+                                         else
+                                           ['hour', selected_date.at_beginning_of_day.to_s(:db),
+                                            selected_date.at_end_of_day.to_s(:db)]
+                                         end
+
+    filter_params.merge('start_time' => start_time, 'end_time' => end_time,
+                        'group_by' => nested_group)
+  end
+
+  def groups_for_select
+    [[:month, :day, :hour], nil]
+  end
+
+end
+```
+
+#### Options
+- `:filters`: Allows to customize the filters used when creating the nested report.
+- `:if`: Used to decide whether or not to enable the nested report.
+
+### Validations
 TODO
 
 ### Formats
 
-Currently the only render format is HTML. We have plans on adding CSV and JSON.
+Currently the following formats are supported:
+- HTML
+- CSV
+
+We have plans on adding JSON in the future.
 
 ## Contributing
 

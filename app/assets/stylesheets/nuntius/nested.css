@@ -1,0 +1,8 @@
+tr[data-nested] {
+    cursor: pointer
+}
+
+table.nested {
+    border: 3px solid red !important;
+    margin-bottom: 0;
+}

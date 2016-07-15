@@ -3,6 +3,6 @@
     <%= render partial: 'form', locals: { report: @report } %>
   </section>
   <section class='panel'>
-    <%= render partial: 'table', locals: { report: @report } %>
+    <%= render partial: 'table', locals: { report: @report, nest: true } %>
   </section>
 </div>

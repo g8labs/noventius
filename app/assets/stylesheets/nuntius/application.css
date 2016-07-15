@@ -16,6 +16,7 @@
  *= require jquery-tablesorter/theme.bootstrap
  *= require_self
  *= require nuntius/reports
+ *= require nuntius/nested
  */
 
 .navbar {

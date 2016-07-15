@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Nuntius::ApplicationHelper, type: :helper do
+RSpec.describe Nuntius::ApplicationHelper do
 
   describe '#scope_name' do
 
