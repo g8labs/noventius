@@ -10,10 +10,10 @@
     <% end %>
   </thead>
   <tbody>
-    <% report.rows.each do |row| %>
+    <% report.processed_rows.each do |row| %>
       <%= row_tag(row, report) do %>
         <% row.each do |cell| %>
-          <td><%= cell %></td>
+          <%= cell_tag(cell) %>
         <% end %>
       <% end %>
     <% end %>

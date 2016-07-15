@@ -45,6 +45,24 @@ module Nuntius
       result.rows
     end
 
+    def processed_rows
+      post_processors.inject(rows) do |rows, (post_processor, options)|
+        execute = options.fetch(:if, true)
+        execute = instance_exec(&execute) if execute.is_a?(Proc)
+        execute = public_send(execute) if execute.is_a?(Symbol)
+
+        return rows unless execute
+
+        if post_processor.is_a?(Proc)
+          instance_exec(rows, &post_processor)
+        elsif post_processor.is_a?(Symbol)
+          public_send(rows)
+        else
+          post_processor.process(self, rows)
+        end
+      end
+    end
+
     def to(format)
       case format
       when :csv
