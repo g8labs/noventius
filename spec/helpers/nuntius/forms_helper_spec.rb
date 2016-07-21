@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Nuntius::FormsHelper, type: :helper do
+RSpec.describe Nuntius::FormsHelper do
 
   before { helper.extend Nuntius::ApplicationHelper }
 

@@ -4,7 +4,8 @@ module Nuntius
 
   class ReportsController < ApplicationController
 
-    before_action :ensure_report, only: [:show]
+    before_action :set_report, only: [:show, :nested]
+    before_action :set_nested_report, only: [:nested]
 
     def index
       reports
@@ -17,10 +18,22 @@ module Nuntius
       end
     end
 
+    def nested
+      respond_to do |format|
+        format.html { render layout: false }
+      end
+    end
+
     protected
 
-    def ensure_report
-      @report = report_class.new(filter_params)
+    def set_report
+      @report ||= report_class.new(filter_params)
+    rescue NameError
+      redirect_to reports_path, alert: 'Report not found'
+    end
+
+    def set_nested_report
+      @nested_report ||= @report.build_nested_report(params[:row])
     end
 
     def report_class

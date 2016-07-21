@@ -1,4 +1,5 @@
-<table class='table table-hover'>
+<% nested = local_assigns.fetch(:nested, false) %>
+<table class='table table-hover <%= 'nested' if nested %>'>
   <thead>
     <% number_of_header_levels(report.columns).times do |level| %>
       <tr>
@@ -10,11 +11,11 @@
   </thead>
   <tbody>
     <% report.rows.each do |row| %>
-      <tr>
+      <%= row_tag(row, report) do %>
         <% row.each do |cell| %>
           <td><%= cell %></td>
         <% end %>
-      </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

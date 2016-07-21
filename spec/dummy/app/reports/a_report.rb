@@ -21,6 +21,8 @@ class AReport < Nuntius::Report
   validate :juan, rules: { required: true, date: true }
   validate :juana, rules: { required: true, datetime: true }
 
+  nest_report BReport
+
   def ids
     [[:a, :b, :c], :a]
   end

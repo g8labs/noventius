@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Nuntius::FiltersHelper, type: :helper do
+RSpec.describe Nuntius::FiltersHelper do
 
   before { helper.extend Nuntius::ApplicationHelper }
 
