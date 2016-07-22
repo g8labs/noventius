@@ -249,7 +249,7 @@ class UsersReport < Nuntius::Report
   end
 
   def groups_for_select
-    [[:month, :day, :hour], nil]
+    [[:day, :month, :hour], nil]
   end
 
 end
@@ -259,7 +259,76 @@ end
 - `:filters`: Allows to customize the filters used when creating the nested report.
 - `:if`: Used to decide whether or not to enable the nested report.
 
+### Post processors
+
+Its possible to add post processors for the rows, a post processor takes the rows and applies
+some transformation to some or all of them and returns the transformed rows. Post processors can
+be chained together so each processor can focus on a specific task.
+
+The `post_processor` method takes:
+- `Symbol`: When a symbol is given it will execute the instance method with tha name passing the
+rows as parameter.
+- `Proc`: When a block is given it will execute the block in the instance passing the rows as
+parameter.
+- Anything that responds to `process(report, rows)`: When not a `Symbol` or a `Proc`is provided
+what ever is given to the method will need to respond to `process` and take the report and rows as
+parameters.
+
+```
+class UsersReport < Nuntius::Report
+
+  post_processor :parse_dates
+  post_processor ->(rows) { FormatDatesPostProcessor.new(1).process(rows) }
+
+  def parse_dates(rows)
+    rows.map do |row|
+      row[1] = DateTime.parse(row[1])
+
+      row
+    end
+  end
+
+  class FormatDatesPostProcessor
+
+    def initialize(column_index)
+      @column_index = column_index
+    end
+
+    def process(rows)
+      rows.map do |row|
+        # At this point row[@column_index] is a date because of the previous post processor.
+        row[@column_index] = row[@column_index].iso8601
+
+        row
+      end
+    end
+
+  end
+end
+```
+
+#### Built in post processors
+- `Nuntius::PostProcessors::DateRanges`: This post processor its used to fill the gaps when the
+rows are grouped by: "Day" (day), "Month" (month), "Day of Week" (dow), "Hour" (hour) and "Month of Year" (moy).
+
+##### Example
+
+```
+class UsersReport < Nuntius::Report
+
+  filter :group_by, :select, option_tags: :groups_for_select
+
+  post_processor -> { Nuntius::PostProcessors::DateRanges.new(:date, group_by) }
+
+  def groups_for_select
+    [[:day, :month, :hour], nil]
+  end
+
+end
+```
+
 ### Validations
+
 TODO
 
 ### Formats

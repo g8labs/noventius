@@ -43,6 +43,7 @@ module Nuntius
         # @param [String] component The Date component to extract
         # @param [String] column The column that has the timestamp
         # @param [String] time_zone The time_zone of the timestamp. Default: 'America/Montevideo'
+        #
         # @return [String] The SQL function
         def date_extract(component:, column:, time_zone: 'America/Montevideo')
           sql_function = SQL_FUNCTIONS[component].dup

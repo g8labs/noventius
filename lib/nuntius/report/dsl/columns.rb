@@ -55,6 +55,10 @@ module Nuntius
             ColumnsGroup.new(name, children, options)
           end
 
+          def column_index(name)
+            columns.find_index { |column| column.name == name }
+          end
+
         end
 
       end
