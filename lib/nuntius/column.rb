@@ -13,6 +13,7 @@ module Nuntius
       @type = type.to_sym
       @label = options.delete(:label) || @name.to_s
       @label = instance_exec(&@label) if @label.is_a?(Proc)
+      @value = options[:value] || ->(rows) { rows[column_index(name.to_sym)] }
       @options = options
       @children = options[:children] || []
     end
@@ -21,8 +22,14 @@ module Nuntius
       @options[:html_options] || {}
     end
 
-    def deep_dup
-      Marshal.load(Marshal.dump(self))
+    def value(report, row)
+      if @value.is_a?(Proc)
+        report.instance_exec(row, &@value)
+      elsif @value.is_a?(Symbol)
+        report.public_send(@value, row)
+      else
+        @value
+      end
     end
 
     def depth
