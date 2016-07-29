@@ -56,7 +56,7 @@ module Nuntius
         if post_processor.is_a?(Proc)
           instance_exec(rows, &post_processor)
         elsif post_processor.is_a?(Symbol)
-          public_send(rows)
+          public_send(post_processor, rows)
         else
           post_processor.process(self, rows)
         end

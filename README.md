@@ -339,7 +339,7 @@ class UsersReport < Nuntius::Report
 
   filter :group_by, :select, option_tags: :groups_for_select
 
-  post_processor -> { Nuntius::PostProcessors::DateRanges.new(:date, group_by) }
+  post_processor ->(rows) { Nuntius::PostProcessors::DateRanges.new(:date, group_by).process(self, rows) }
 
   def groups_for_select
     [[:day, :month, :hour], nil]

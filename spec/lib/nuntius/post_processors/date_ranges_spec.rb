@@ -22,15 +22,25 @@ RSpec.describe Nuntius::PostProcessors::DateRanges do
 
     let(:report) do
       Class.new(Nuntius::Report) do
+        include Nuntius::Extension::DateQuery
+
+        filter :group_by, :select, option_tags: :date_extract_options
+
         def sql
-          User.all.to_sql
+          created_at_for_select = if group_by == 'hour'
+                                    "strftime('%H', created_at)"
+                                  else
+                                    'created_at'
+                                  end
+
+          User.select("id, name, role_id, #{created_at_for_select}").to_sql
         end
-      end.new
+      end.new(group_by: step.to_s)
     end
 
     before do
-      User.create!(created_at: DateTime.new(2017, 02, 17).in_time_zone(time_zone))
-      User.create!(created_at: DateTime.new(2017, 04, 04).in_time_zone(time_zone))
+      User.create!(created_at: DateTime.new(2017, 02, 17, 3).in_time_zone(time_zone))
+      User.create!(created_at: DateTime.new(2017, 04, 04, 11).in_time_zone(time_zone))
     end
 
     context 'when the step is hour' do
@@ -38,7 +48,7 @@ RSpec.describe Nuntius::PostProcessors::DateRanges do
       let(:step) { :hour }
 
       it 'adds empty rows to complete the hours' do
-        expect(post_processor.process(report, report.rows).count).to eq(1105)
+        expect(post_processor.process(report, report.rows).count).to eq(9)
       end
 
     end
@@ -48,7 +58,7 @@ RSpec.describe Nuntius::PostProcessors::DateRanges do
       let(:step) { :day }
 
       it 'adds empty rows to complete the days' do
-        expect(post_processor.process(report, report.rows).count).to eq(46)
+        expect(post_processor.process(report, report.rows).count).to eq(47)
       end
 
     end
