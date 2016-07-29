@@ -4,7 +4,8 @@ module Nuntius
 
     class DateRanges
 
-      STEPS = %i(day month dow hour moy)
+      DATE_STEPS = %i(day month)
+      STEPS = %i(day month hour dow moy)
 
       def initialize(column_index_or_name, step, time_zone = 'America/Montevideo')
         fail ArgumentError, "Step not supported [#{step}]." unless STEPS.include?(step.to_sym)
@@ -22,24 +23,34 @@ module Nuntius
 
         empty_row = build_empty_row(report)
 
-        build_range(start_date, end_date).map do |range_item|
-          rows_by_date.fetch(range_item.date, [range_item.date].concat(empty_row))
+        build_range(start_date, end_date).map do |value|
+          rows_by_date.fetch(value, [value].concat(empty_row))
         end
       end
 
       private
 
       def group_rows_by_date(report, rows)
-        column_index = get_column_index(report)
+        column_index = get_column_index(report, rows.first.is_a?(Hash))
 
         rows.inject({}) do |result, row|
-          row[column_index] = DateTime.parse(row[column_index]).in_time_zone(@time_zone)
-          result.merge(row[column_index] => row)
+          row[column_index] = parse_date_column(row[column_index])
+          result.merge(row[column_index].to_i => row)
         end
       end
 
-      def get_column_index(report)
-        if @column_index_or_name.is_a?(Integer)
+      def parse_date_column(value)
+        if DATE_STEPS.include?(@step)
+          DateTime.parse(value).in_time_zone(@time_zone)
+        else
+          value.to_i
+        end
+      end
+
+      def get_column_index(report, hash_rows)
+        if hash_rows
+          @column_index_or_name.to_s
+        elsif @column_index_or_name.is_a?(Integer)
           @column_index_or_name
         else
           report.column_index(@column_index_or_name)
@@ -51,13 +62,14 @@ module Nuntius
         [''] * (columns_count - 1)
       end
 
-      def build_range(start_date, end_date)
-        if @step == :day
-          DayRange.new(start_date)..DayRange.new(end_date)
-        elsif @step == :month
-          MonthRange.new(start_date)..MonthRange.new(end_date)
-        elsif @step == :hour
-          HourRange.new(start_date)..HourRange.new(end_date)
+      def build_range(start_value, end_value)
+        case @step
+        when :day
+          (DayRange.new(start_value)..DayRange.new(end_value)).map(&:date)
+        when :month
+          (MonthRange.new(start_value)..MonthRange.new(end_value)).map(&:date)
+        else
+          start_value..end_value
         end
       end
 
@@ -95,15 +107,6 @@ module Nuntius
         def initialize(date)
           super
           @step = 1.month
-        end
-
-      end
-
-      class HourRange < BaseRange
-
-        def initialize(date)
-          super
-          @step = 1.hour
         end
 
       end
