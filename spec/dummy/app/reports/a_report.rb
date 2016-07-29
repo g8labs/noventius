@@ -1,13 +1,15 @@
 class AReport < Nuntius::Report
 
   column :date, :datetime,  label: 'Date', html_options: { rowspan: 2 }
-  columns_group :offer_1, [column(:event_1, :string, label: 'Event_1'),
-                           column(:event_2, :string, label: 'Event_2'),
-                           column(:event_3, :string, label: 'Event_3')],
-                label: 'Offer_1', html_options: { colspan: 3, rowspan: 1, }
-  columns_group :offer_1, [column(:event_1, :string, label: 'Event_1'),
-                           column(:event_2, :string, label: 'Event_2'),
-                           column(:event_3, :string, label: 'Event_3')], label: 'Offer_1',
+  columns_group :offer_1, [column(:offer_1_event_1, :string, label: 'Offer 1 - Event 1'),
+                           column(:offer_1_event_2, :string, label: 'Offer 1 - Event 2'),
+                           column(:offer_1_event_3, :string, label: 'Offer 1 - Event 3')],
+                label: 'Offer 1',
+                html_options: { colspan: 3, rowspan: 1, }
+  columns_group :offer_2, [column(:offer_2_event_1, :string, label: 'Offer 2 - Event 1'),
+                           column(:offer_2_event_2, :string, label: 'Offer 2 - Event 2'),
+                           column(:offer_2_event_3, :string, label: 'Offer 2 - Event 3')],
+                label: 'Offer 2',
                 html_options: { colspan: 3, rowspan: 1, }
 
   filter :flash_with_options, :text, value: 'hi', options: { class: 'css-class' }, icon: 'flash'

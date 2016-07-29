@@ -12,8 +12,8 @@
   <tbody>
     <% report.processed_rows.each do |row| %>
       <%= row_tag(row, report) do %>
-        <% row.each do |cell| %>
-          <%= cell_tag(cell) %>
+        <% report.columns_without_groups.each do |column|%>
+          <%= cell_tag(cell_for_row_column(report, row, column)) %>
         <% end %>
       <% end %>
     <% end %>

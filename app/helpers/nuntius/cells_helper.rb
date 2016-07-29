@@ -15,6 +15,10 @@ module Nuntius
       end
     end
 
+    def cell_for_row_column(report, row, column)
+      column.value(report, row)
+    end
+
   end
 
 end
