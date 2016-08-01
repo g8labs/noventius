@@ -10,29 +10,30 @@
     form.submit();
   }
 
-  $(document).on('ready page:load', function(){
+  $(function() {
     var $form = $(FORM_SELECTOR);
-    $form.validate({
-      errorClass: 'has-error has-feedback',
-      validClass: 'has-success has-feedback',
-      errorPlacement: function(error, element) {
-        $error = $(error);
-        $element = $(element);
-        $(error).addClass('control-label');
-        $element.closest('.form-group').append(error);
-      },
-      rules: VALIDATIONS['rules'],
-      messages: VALIDATIONS['messages']
-    });
+    if ($form.length > 0) {
+      $form.validate({
+        errorClass: 'has-error has-feedback',
+        validClass: 'has-success has-feedback',
+        errorPlacement: function(error, element) {
+          $error = $(error);
+          $element = $(element);
+          $(error).addClass('control-label');
+          $element.closest('.form-group').append(error);
+        },
+        rules: VALIDATIONS['rules'],
+        messages: VALIDATIONS['messages']
+      });
 
-    $form.on('click', 'input[name=commit]', function(e) {
-      submitWithFormat($form, e, 'html');
-    });
+      $form.on('click', 'input[name=commit]', function(e) {
+        submitWithFormat($form, e, 'html');
+      });
 
-    $form.on('click', '.download', function(e) {
-      submitWithFormat($form, e, 'csv');
-    });
-
+      $form.on('click', '.download', function(e) {
+        submitWithFormat($form, e, 'csv');
+      });
+    }
   });
 
 })();

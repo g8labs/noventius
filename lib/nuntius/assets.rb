@@ -1,0 +1,7 @@
+require 'jquery-rails'
+require 'jquery-tablesorter'
+require 'twitter-bootstrap-rails'
+require 'jquery-validation-rails'
+require 'bootstrap3-datetimepicker-rails'
+require 'momentjs-rails'
+require 'moment_timezone/rails'

@@ -10,9 +10,10 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require bootstrap/dist/css/bootstrap.min
- *= require eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min
- *= require select2-dist/dist/css/select2
+ *= require twitter-bootstrap-static/bootstrap
+ *= require twitter-bootstrap-static/sprites
+ *= require bootstrap-datetimepicker
+ *= require select2/select2
  *= require jquery-tablesorter/theme.bootstrap
  *= require_self
  *= require nuntius/reports
