@@ -16,6 +16,8 @@ module Nuntius
       end
 
       def process(report, rows)
+        return [] if rows.empty?
+
         rows_by_date = group_rows_by_date(report, rows)
 
         start_date = rows_by_date.keys.min
