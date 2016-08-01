@@ -1,5 +1,6 @@
-# Nuntius
+![alt tag](/logo.png?raw=true)
 
+# Nuntius
 Reporting engine for rails applications
 
 ## Installation
@@ -88,14 +89,14 @@ columns groups:
 
  ```ruby
 class UsersReport < Nuntius::Report
- 
+
   column :id, :integer, label: 'Id', html_options: { rowspan: 2, colspan: 1 }
   columns_group :offer_1,
                 [column(:event_1, :string, label: 'Event_1'),
                  column(:event_2, :string, label: 'Event_2'),
                  column(:event_3, :string, label: 'Event_3')],
                 label: 'Offer_1', html_options: { colspan: 3, rowspan: 1, }
- 
+
 end
  ```
 
@@ -106,11 +107,11 @@ for this case the `dynamic_columns` helper can be used to generate those.
 
  ```ruby
 class UsersReport < Nuntius::Report
- 
+
   column :id, :integer, label: 'Id', html_options: { rowspan: 2 }
   dynamic_columns :role_users_columns
   column :created_at, :datetime, html_options: { rowspan: 2 }
-   
+
   filter :role_id, :select, option_tags: :roles_for_select
 
   def roles_for_select
@@ -127,7 +128,7 @@ class UsersReport < Nuntius::Report
                     label: "${user.role.name [#{user.name}]}", html_options: { colspan: 2 })
     end
   end
- 
+
  end
  ```
 
