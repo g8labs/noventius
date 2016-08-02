@@ -1,6 +1,6 @@
 ![alt tag](/logo.png?raw=true)
 
-# Nuntius
+# Nuntius [![Build Status](https://travis-ci.org/g8labs/nuntius.svg?branch=add-travis)](https://travis-ci.org/g8labs/nuntius) [![In Progress](https://badge.waffle.io/g8labs/nuntius.png?label=In%20Progress&title=In%20Progress)](https://waffle.io/g8labs/nuntius)
 
 > A messenger, reporter, courier, bearer of news or tidings
 

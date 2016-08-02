@@ -1,0 +1,19 @@
+language: ruby
+cache: bundler
+rvm:
+- 2.1.0
+- 2.1.2
+env:
+- RAILS_ENV="test"
+before_install:
+- gem update --remote bundler
+install:
+- bundle install --retry=3
+before_script:
+- bundle exec rake app:db:drop app:db:create app:db:schema:load
+script:
+- bundle exec rubocop
+- bundle exec rspec
+notifications:
+  slack:
+    secure: Dmuj5apyjS51DYJTpLOXzS1IDi/vnZQ2wpv3QxM9FED7f3nBxD5aLm0zMVDMPJ7uw6nQc6VPC1NoqC3fqNXQS0ISlizQ7nEEaSFdt0VIZUP41jt9hQH89qY/QQJZSWbjH068IuqWIFIqdQxOUj+2jOphMsfgF19gm9ewUYT1R9mNnM+0IxfFDj//83xZlV6+XfJNeCDXxUBSmU777LUO5s+rcT6j1sSBjT/VvJqYWVimlYV7M/GUDzHS2gljh8lCAM326g+++ayAz8lg6INxJKpbWzG8ATONYJaIOHEjnBmOtwbjxvl+RdDyz/hQDZe00EUr98KDb3qFIe88PULSVlUhvGjPgH6JcZg8piTKsc8J+2qxsfx1396WvMIFQsDgDUaj2oF7aPIfVXU1AYYMlBH0OJ8RHeyxUjP3m4cGZJD1mOEbtI8VMaxwvYRDs/KrgyPH4sJWVZ7HZGixTXPaXT7soKOjjb1RnudMut1pJWPStMgF3O1SLYAoebTQf7Eq3T+q1Ag0lS+mB07GwsBVoNH2psxPc1bWEQyIabwAPnhGeJKuz5vC8JtucoktGhZ1qXaqzeGY1+Y++clgBK3aFVAbOXuOwST9o1XfdqgdPXL/iLHZ93nvlc8Qo5txxyr9UzzeXb7gYOM+TusTg0QQL0W/UyZKP03P1JzO9V9s79U=
