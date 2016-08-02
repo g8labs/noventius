@@ -105,7 +105,7 @@ end
 There are some columns that might depend on the result of the current query in order to be present,
 for this case the `dynamic_columns` helper can be used to generate those.
 
- ```ruby
+```ruby
 class UsersReport < Nuntius::Report
 
   column :id, :integer, label: 'Id', html_options: { rowspan: 2 }
@@ -177,7 +177,13 @@ end
 ```
 
 ##### Supported formats for values
-TODO
+The `option_tags` options can receive one of the following values:
+- `Symbol`: When a symbol is given it will execute the instance method with the given name and the returned value will be treated as the new value for the option.
+- `Hash`: Only supported when the `dependent` option is being used in the filter.
+- `String`: When a string is given it will be treated as raw HTML containing the option tags for the select box.
+- `Array`: When an array is given different things will happen depending on it's length.
+  - Length 1..2: Rails `options_for_select` will be called with the given array.
+  - Length 3..4: Rails `options_from_collection_for_select` will be called with the given array.
 
 ##### Supported options
 - dependent: This allows to generate selects whose options are dependent from
@@ -267,7 +273,7 @@ some transformation to some or all of them and returns the transformed rows. Pos
 be chained together so each processor can focus on a specific task.
 
 The `post_processor` method takes:
-- `Symbol`: When a symbol is given it will execute the instance method with tha name passing the
+- `Symbol`: When a symbol is given it will execute the instance method with the name passing the
 rows as parameter.
 - `Proc`: When a block is given it will execute the block in the instance passing the rows as
 parameter.
@@ -275,7 +281,7 @@ parameter.
 what ever is given to the method will need to respond to `process` and take the report and rows as
 parameters.
 
-```
+```ruby
 class UsersReport < Nuntius::Report
 
   post_processor :parse_dates
@@ -314,7 +320,7 @@ rows are grouped by: "Day" (day), "Month" (month), "Day of Week" (dow), "Hour" (
 
 ##### Example
 
-```
+```ruby
 class UsersReport < Nuntius::Report
 
   filter :group_by, :select, option_tags: :groups_for_select
@@ -330,7 +336,27 @@ end
 
 ### Validations
 
-TODO
+It's possible to add client side validations to our filters simply by using the `validate` DSL. For this purpose we use the [jQuery Validation Plugin](https://jqueryvalidation.org) so if you have used it before it will be really easy to get started with it.
+
+##### Example
+
+```ruby
+class UsersReport < Nuntius::Report
+
+  filter :start_time, :datetime
+  filter :end_time, :datetime
+
+  validate :start_time, rules: { required: true }, messages: { required: 'Provide an start time' }
+  validate :end_time, rules: { required: true }, messages: { required: 'Provide an end time' }
+
+end
+```
+
+The example above specifies that the `start_time` and `end_time` filters are required, and if the validations fails the corresponding error messages will be displayed to the user.
+
+##### Options
+- `:rules`: A Hash containing key/value pairs defining custom rules. Key is the rule and value the parameter. [Reference](https://jqueryvalidation.org/validate/#rules)
+- `:messages`: A Hash containing key/value pairs defining custom messages. Key is the rule and value the message if the validation fails. [Reference](https://jqueryvalidation.org/validate/#messages)
 
 ### Formats
 
