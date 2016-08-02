@@ -370,7 +370,12 @@ We have plans on adding JSON in the future.
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/g8labs/nuntius.
 
+## We are Hiring!
+
+If you are interested in working with us we are happy to talk :). Ping at dev@g8labs.co
+
 ## Contact
-- andres.pache@g8labs.co
-- martin.fernandez@g8labs.co
-- martin.garcia@g8labs.co
+- Adrian Gomez     - <adrian_g171@hotmail.com>
+- Andrés Pache     - <andres.pache@g8labs.co>
+- Martín Fernández - <martin.fernandez@g8labs.co>
+- Martín García    - <martin.garcia@g8labs.co>
