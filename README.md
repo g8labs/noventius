@@ -1,6 +1,9 @@
 ![alt tag](/logo.png?raw=true)
 
 # Nuntius
+
+> A messenger, reporter, courier, bearer of news or tidings
+
 Reporting engine for rails applications
 
 ## Installation
