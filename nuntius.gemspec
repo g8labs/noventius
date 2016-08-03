@@ -9,9 +9,12 @@ Gem::Specification.new do |s|
   s.version     = Nuntius::VERSION
   s.authors     = ['Andres Pache', 'Martin Fernandez']
   s.email       = ['andres.pache@g8labs.co', 'martin.fernandez@g8labs.co']
-  s.summary     = 'Reporting engine'
-  s.description = 'Reporting engine'
+  s.homepage    = 'https://github.com/g8labs/nuntius'
   s.license     = 'MIT'
+  s.summary     = 'Rails reporting engine'
+  s.description = <<-DESC
+    Nuntius("A messenger, reporter, courier, bearer of news or tidings") is a reporting engine for the Rails framework.
+  DESC
 
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.rdoc']
 
