@@ -43,7 +43,7 @@ module Nuntius
 
       def parse_date_column(value)
         if DATE_STEPS.include?(@step)
-          Time.parse(value).in_time_zone(@time_zone)
+          Time.zone.parse(value).in_time_zone(@time_zone)
         else
           value.to_i
         end
