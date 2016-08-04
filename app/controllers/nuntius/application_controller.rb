@@ -9,7 +9,7 @@ module Nuntius
     protect_from_forgery with: :exception
 
     def reports
-      @reports ||= Report.all
+      @reports ||= Report.visibles
     end
 
   end

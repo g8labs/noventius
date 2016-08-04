@@ -17,6 +17,14 @@ module Nuntius
         @tab_title = title
       end
 
+      def hidden(hidden)
+        @hidden_flag = hidden
+      end
+
+      def visible?
+        @hidden_flag.nil? || !@hidden_flag
+      end
+
     end
 
     def initialize(filter_params = {})
@@ -27,6 +35,10 @@ module Nuntius
       Dir.glob(File.expand_path('app/reports/*.rb', Rails.root)).map do |file|
         file[%r{app\/reports\/(.*)\.rb}, 1].classify.constantize
       end
+    end
+
+    def self.visibles
+      all.select(&:visible?)
     end
 
     def result
