@@ -286,6 +286,17 @@ class UsersReport < Nuntius::Report
 end
 ```
 
+Sometimes you will be creating reports that will be only used as nested reports. If you don't want to show
+this reports in the menu just add `hidden true` in the report class.
+
+```ruby
+class NestedReport < Nuntius::Report
+
+  hidden true
+
+end
+```
+
 #### Options
 - `:filters`: Allows to customize the filters used when creating the nested report.
 - `:if`: Used to decide whether or not to enable the nested report.

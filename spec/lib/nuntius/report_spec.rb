@@ -9,6 +9,16 @@ RSpec.describe Nuntius::Report do
       subject { described_class.all }
 
       it 'should return all reports' do
+        expect(subject).to match_array([AReport, BReport, HiddenReport])
+      end
+
+    end
+
+    describe '#visibles' do
+
+      subject { described_class.visibles }
+
+      it 'should return all reports' do
         expect(subject).to match_array([AReport, BReport])
       end
 
