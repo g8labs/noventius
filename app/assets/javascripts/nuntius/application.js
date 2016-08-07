@@ -10,16 +10,16 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery/dist/jquery.min
-//= require bootstrap/dist/js/bootstrap.min
-//= require moment/min/moment-with-locales.min
-//= require moment-timezone/builds/moment-timezone-with-data.min
-//= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
-//= require jquery-validation/dist/jquery.validate.min
-//= require jquery-validation/dist/additional-methods.min
-//= require select2-dist/dist/js/select2.full
-//= require jquery-tablesorter
+//= require jquery
+//= require jquery_ujs
+//= require twitter/bootstrap
 //= require moment
+//= require moment-timezone-with-data
+//= require bootstrap-datetimepicker
+//= require jquery.validate
+//= require jquery.validate.additional-methods
+//= require select2/select2.full
+//= require jquery-tablesorter
 //= require_self
 //= require nuntius/reports
 
