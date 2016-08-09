@@ -1,4 +1,4 @@
-class AReport < Nuntius::Report
+class AReport < Noventius::Report
 
   column :date, :datetime,  label: 'Date', html_options: { rowspan: 2 }
   columns_group :offer_1, [column(:offer_1_event_1, :string, label: 'Offer 1 - Event 1'),

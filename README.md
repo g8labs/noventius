@@ -1,6 +1,6 @@
 ![alt tag](/logo.png?raw=true)
 
-# Nuntius [![Build Status](https://travis-ci.org/g8labs/nuntius.svg?branch=add-travis)](https://travis-ci.org/g8labs/nuntius) [![In Progress](https://badge.waffle.io/g8labs/nuntius.png?label=In%20Progress&title=In%20Progress)](https://waffle.io/g8labs/nuntius)
+# Noventius [![Build Status](https://travis-ci.org/g8labs/noventius.svg?branch=add-travis)](https://travis-ci.org/g8labs/noventius) [![In Progress](https://badge.waffle.io/g8labs/noventius.png?label=In%20Progress&title=In%20Progress)](https://waffle.io/g8labs/noventius)
 
 > A messenger, reporter, courier, bearer of news or tidings
 
@@ -11,7 +11,7 @@ Reporting engine for rails applications
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'nuntius'
+gem 'noventius'
 ```
 
 And then execute:
@@ -21,34 +21,34 @@ $ bundle
 
 Or install it yourself as:
 ```bash
-$ gem install nuntius
+$ gem install noventius
 ```
 
 ## Usage
 
-First we need to create a report. Reports should be placed under `app/reports` and need to inherit from `Nuntius::Report`.
+First we need to create a report. Reports should be placed under `app/reports` and need to inherit from `Noventius::Report`.
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
 end
 ```
 
-Then you need to mount the nuntius engine by adding this to the application's config/routes.rb:
+Then you need to mount the noventius engine by adding this to the application's config/routes.rb:
 
 ```ruby
-  mount Nuntius::Engine => '/nuntius'
+  mount Noventius::Engine => '/noventius'
 ```
 
 After that you can access an use the reports by navigating to:
-`http://localhost:3000/nuntius/reports`
+`http://localhost:3000/noventius/reports`
 
 ### Query
 
 Reports need to implement the `sql` method, this method should return the SQL query that is going to be performed in the database.
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
   def sql
     <<-SQL
@@ -69,7 +69,7 @@ the number of columns defined needs to match the number of elements for every ro
 here is an example:
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
   column :id, :integer, label: 'Id', html_options: { rowspan: 2, colspan: 1 }
   column :name, :string,  label: -> { self.name.to_s.humanize  }
@@ -93,7 +93,7 @@ Sometimes we want to group several columns under a common header, this can be do
 columns groups:
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
   column :id, :integer, label: 'Id', html_options: { rowspan: 2, colspan: 1 }
   columns_group :offer_1,
@@ -112,7 +112,7 @@ values are taken from that match, but you can also provide custom values for col
 the `:value` option.
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
   column :id, :integer, value: ->(row){ row[0] }
 
@@ -130,7 +130,7 @@ There are some columns that might depend on the result of the current query in o
 for this case the `dynamic_columns` helper can be used to generate those.
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
   column :id, :integer, label: 'Id', html_options: { rowspan: 2 }
   dynamic_columns :role_users_columns
@@ -163,7 +163,7 @@ What ever the `role_users_columns` returns will we placed in the columns list in
 Many times, reports need some input from the user. This simple DSL will allow you to add filters in reports easily.
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
   filter :age, :number, options: { min: 18, max: 100 }
 
@@ -180,7 +180,7 @@ end
 
 This filter call adds a instance method to the report that will return the user input.
 
-A very important thing to notice is that filter DSL wraps on top off rails input helpers so all of them are supported. Full list here: https://github.com/g8labs/nuntius/blob/master/lib/nuntius/filter.rb#L7
+A very important thing to notice is that filter DSL wraps on top off rails input helpers so all of them are supported. Full list here: https://github.com/g8labs/noventius/blob/master/lib/noventius/filter.rb#L7
 
 #### Select
 
@@ -189,7 +189,7 @@ For this filter you need to provide a method name that when executed returns the
 available values for the dropdown.
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
   filter :role_id, :select, option_tags: :roles_for_select
 
@@ -254,7 +254,7 @@ You can customize the options for the nested report by providing either a block 
 use the selected filters of the parent report.
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
   filter :start_time, :datetime
   filter :end_time, :datetime
@@ -290,7 +290,7 @@ Sometimes you will be creating reports that will be only used as nested reports.
 this reports in the menu just add `hidden true` in the report class.
 
 ```ruby
-class NestedReport < Nuntius::Report
+class NestedReport < Noventius::Report
 
   hidden true
 
@@ -317,7 +317,7 @@ what ever is given to the method will need to respond to `process` and take the 
 parameters.
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
   post_processor :parse_dates
   post_processor ->(rows) { FormatDatesPostProcessor.new(1).process(rows) }
@@ -350,17 +350,17 @@ end
 ```
 
 #### Built in post processors
-- `Nuntius::PostProcessors::DateRanges`: This post processor its used to fill the gaps when the
+- `Noventius::PostProcessors::DateRanges`: This post processor its used to fill the gaps when the
 rows are grouped by: "Day" (day), "Month" (month), "Day of Week" (dow), "Hour" (hour) and "Month of Year" (moy).
 
 ##### Example
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
   filter :group_by, :select, option_tags: :groups_for_select
 
-  post_processor ->(rows) { Nuntius::PostProcessors::DateRanges.new(:date, group_by).process(self, rows) }
+  post_processor ->(rows) { Noventius::PostProcessors::DateRanges.new(:date, group_by).process(self, rows) }
 
   def groups_for_select
     [[:day, :month, :hour], nil]
@@ -376,7 +376,7 @@ It's possible to add client side validations to our filters simply by using the 
 ##### Example
 
 ```ruby
-class UsersReport < Nuntius::Report
+class UsersReport < Noventius::Report
 
   filter :start_time, :datetime
   filter :end_time, :datetime
@@ -403,7 +403,7 @@ We have plans on adding JSON in the future.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/g8labs/nuntius.
+Bug reports and pull requests are welcome on GitHub at https://github.com/g8labs/noventius.
 
 ## We are Hiring!
 

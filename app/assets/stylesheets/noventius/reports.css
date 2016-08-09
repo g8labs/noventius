@@ -1,0 +1,17 @@
+.form-inline .form-group {
+  padding: 5px;
+  position: relative;
+  vertical-align: bottom;
+}
+
+.form-inline label {
+  display: block;
+}
+
+.select-filter-wrapper {
+  width: 14em;
+}
+
+select.noventius-filter {
+  width: 100%;
+}

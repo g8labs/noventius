@@ -1,4 +1,4 @@
-Nuntius::Engine.routes.draw do
+Noventius::Engine.routes.draw do
   resources :reports, param: :name, only: [:index, :show] do
     get :nested, on: :member
   end

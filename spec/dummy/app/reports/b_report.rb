@@ -1,4 +1,4 @@
-class BReport < Nuntius::Report
+class BReport < Noventius::Report
 
   column :column_one, :string, label: 'Column 1'
   column :column_two, :string, label: 'Column 2'

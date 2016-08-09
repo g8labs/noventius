@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Noventius</title>
+  <%= stylesheet_link_tag "noventius/application", media: "all" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <header>
+    <%= render partial: 'shared/noventius/header' %>
+  </header>
+  <main>
+    <div class='container-fluid'>
+      <%= flash_alert %>
+      <%= yield %>
+    </div>
+  </main>
+  <footer></footer>
+  <%= javascript_include_tag 'noventius/application' %>
+</body>
+</html>
