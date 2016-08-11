@@ -70,7 +70,7 @@ module Noventius
       end
 
       def build_empty_row(report)
-        Array.new(report.columns.count - 1, '')
+        Array.new(report.columns.count - 1)
       end
 
       def build_range(start_value, end_value)
@@ -87,7 +87,7 @@ module Noventius
           0..11
         else
           start_value..end_value
-        end.map { |date| parse_date_column(date) }
+        end
       end
 
       class BaseRange
