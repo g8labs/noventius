@@ -13,22 +13,25 @@ module Noventius
       STEPS       = [DAY, MONTH, HOUR, DAY_OF_WEEK, MONTH_OF_YEAR]
       DATE_STEPS  = [DAY, MONTH]
 
-      def initialize(column_index_or_name, step, start_time, end_time, time_zone = 'America/Montevideo')
+      def initialize(column_index_or_name, step, time_zone = 'America/Montevideo')
         fail ArgumentError, "Step not supported [#{step}]." unless STEPS.include?(step.to_sym)
 
         @column_index_or_name = column_index_or_name
         @step = step.to_sym
         @time_zone = time_zone
-        @start_time = start_time.in_time_zone(@time_zone).utc
-        @end_time = end_time.in_time_zone(@time_zone).utc
       end
 
       def process(report, rows)
+        return [] if rows.empty?
+
         rows_by_date = group_rows_by_date(report, rows)
+
+        start_date = rows_by_date.keys.min
+        end_date = rows_by_date.keys.max
 
         empty_row = build_empty_row(report)
 
-        build_range(@start_time, @end_time).map do |value|
+        build_range(start_date, end_date).map do |value|
           rows_by_date.fetch(value, [value].concat(empty_row))
         end
       end
@@ -67,7 +70,7 @@ module Noventius
       end
 
       def build_empty_row(report)
-        Array.new(report.columns.count)
+        Array.new(report.columns.count - 1, '')
       end
 
       def build_range(start_value, end_value)
@@ -93,6 +96,10 @@ module Noventius
 
         attr_reader :date
 
+        def initialize(date)
+          @date = date
+        end
+
         def succ
           self.class.new(@date + @step)
         end
@@ -106,7 +113,7 @@ module Noventius
       class DayRange < BaseRange
 
         def initialize(date)
-          @date = date.beginning_of_day
+          super
           @step = 1.day
         end
 
@@ -115,7 +122,7 @@ module Noventius
       class MonthRange < BaseRange
 
         def initialize(date)
-          @date = date.beginning_of_month
+          super
           @step = 1.month
         end
 
