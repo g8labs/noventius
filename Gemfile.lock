@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    noventius (1.0.0)
+    noventius (2.0.0)
       bootstrap3-datetimepicker-rails (~> 4.17, >= 4.17.37)
       jquery-rails
       jquery-tablesorter (~> 1.21, >= 1.21.3)
