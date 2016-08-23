@@ -18,15 +18,15 @@ module Noventius
     end
 
     def date_filter_tag(name, value: nil, options: {})
-      date_field_tag(name, value, options)
+      text_field_tag(name, value, options.merge(data: { type: :date }))
     end
 
     def datetime_filter_tag(name, value: nil, options: {})
-      datetime_field_tag(name, value, options)
+      text_field_tag(name, value, options.merge(data: { type: :datetime }))
     end
 
     def email_filter_tag(name, value: nil, options: {})
-      datetime_field_tag(name, value, options)
+      email_field_tag(name, value, options)
     end
 
     def month_filter_tag(name, value: nil, options: {})
