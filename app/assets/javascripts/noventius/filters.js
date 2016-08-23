@@ -1,8 +1,16 @@
 (function(){
 
+  var setDateTimePickerDate = function(el, val, format) {
+    if(val) {
+      var $el = $(el);
+      var date = moment(val, format);
+
+      $el.data('DateTimePicker').defaultDate(date);
+    }
+  };
+
   $(function() {
-    // Initialize all DatePickers
-    $("[type='date']").each(function (index, el) {
+    $("input[data-type='date']").each(function (index, el) {
       var $el = $(el);
       var filterName = $el.attr('name');
 
@@ -14,8 +22,7 @@
       setDateTimePickerDate($el, FILTER_PARAMS[filterName], DATE_FORMAT);
     });
 
-    // Initialize all DateTimePickers
-    $("[type='datetime']").each(function (index, el) {
+    $("input[data-type='datetime']").each(function (index, el) {
       var $el = $(el);
       var filterName = $el.attr('name');
 
@@ -28,14 +35,5 @@
     });
 
   });
-
-  var setDateTimePickerDate = function(el, val, format) {
-    if(val) {
-      var $el = $(el);
-      var date = moment(val, format);
-
-      $el.data('DateTimePicker').defaultDate(date);
-    }
-  };
 
 })();
