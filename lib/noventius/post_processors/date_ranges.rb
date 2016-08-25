@@ -24,36 +24,35 @@ module Noventius
       def process(report, rows)
         return [] if rows.empty?
 
-        rows_by_date = group_rows_by_date(report, rows)
+        hash_rows = rows.first.is_a?(Hash)
+
+        column_index = get_column_index(report, hash_rows)
+        rows_by_date = group_rows_by_date(rows, column_index)
 
         start_date = rows_by_date.keys.min
         end_date = rows_by_date.keys.max
 
-        empty_row = build_empty_row(report)
-
         build_range(start_date, end_date).map do |value|
-          rows_by_date.fetch(value, [value].concat(empty_row))
+          empty_row = build_empty_row(report, value, column_index, hash_rows)
+
+          rows_by_date.fetch(value, empty_row)
         end
       end
 
       private
 
-      def group_rows_by_date(report, rows)
-        column_index = get_column_index(report, rows.first.is_a?(Hash))
-
+      def group_rows_by_date(rows, column_index)
         rows.inject({}) do |result, row|
           row[column_index] = parse_date_column(row[column_index])
-          result.merge(row[column_index].to_i => row)
+          result.merge(row[column_index] => row)
         end
       end
 
       def parse_date_column(value)
-        if DATE_STEPS.include?(@step)
-          if value.is_a?(String)
-            Time.zone.parse(value).in_time_zone(@time_zone)
-          else
-            Time.zone.at(value).in_time_zone(@time_zone)
-          end
+        if DATE_STEPS.include?(@step) && value.is_a?(String)
+          Time.zone.parse(value)
+        elsif DATE_STEPS.include?(@step)
+          Time.zone.at(value)
         else
           value.to_i
         end
@@ -69,8 +68,16 @@ module Noventius
         end
       end
 
-      def build_empty_row(report)
-        Array.new(report.columns.count - 1)
+      def build_empty_row(report, value, column_index, hash_rows)
+        empty_row = if hash_rows
+                      {}
+                    else
+                      Array.new(report.columns.count)
+                    end
+
+        empty_row[column_index] = value
+
+        empty_row
       end
 
       def build_range(start_value, end_value)
