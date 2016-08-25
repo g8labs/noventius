@@ -4,7 +4,7 @@
     <% number_of_header_levels(report.columns).times do |level| %>
       <tr>
         <% header_columns_for_level(report.columns, level).each do |column| %>
-          <%= column_table_header_tag(column) %>
+          <%= column_table_header_tag(report, column) %>
         <% end %>
       </tr>
     <% end %>
@@ -13,7 +13,7 @@
     <% report.processed_rows.each do |row| %>
       <%= row_tag(row, report) do %>
         <% report.columns_without_groups.each do |column|%>
-          <%= cell_tag(cell_for_row_column(report, row, column)) %>
+          <%= cell_tag(report, row, column) %>
         <% end %>
       <% end %>
     <% end %>

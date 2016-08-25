@@ -2,11 +2,11 @@ module Noventius
 
   module ColumnsHelper
 
-    def column_table_header_tag(column)
+    def column_table_header_tag(report, column)
       options = column.html_options.deep_merge(colspan: column.html_options.fetch(:colspan, 1),
                                                rowspan: column.html_options.fetch(:rowspan, 1),
                                                class:   class_for_column_header(column),
-                                               data:    data_for_column_header(column))
+                                               data:    data_for_column_header(column, report))
 
       content_tag(:th, column.label, options)
     end
@@ -34,9 +34,9 @@ module Noventius
       [column.html_options[:class], css_class].compact.join(' ')
     end
 
-    def data_for_column_header(column)
+    def data_for_column_header(column, report)
       if column.is_a?(Column)
-        { type: column.type }
+        { type: column.type(report) }
       elsif column.is_a?(ColumnsGroup)
         {}
       end
