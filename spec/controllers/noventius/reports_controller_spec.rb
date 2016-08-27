@@ -15,7 +15,13 @@ RSpec.describe Noventius::ReportsController do
     it 'assigns all the reports to @reports' do
       get :index
 
-      expect(assigns(:reports)).to match_array([AReport, BReport])
+      expect(assigns(:reports)).to include(AReport, BReport)
+    end
+
+    it 'does not add the hidden reports to @reports' do
+      get :index
+
+      expect(assigns(:reports)).to_not include(HiddenReport)
     end
 
   end
@@ -37,13 +43,13 @@ RSpec.describe Noventius::ReportsController do
       it 'assigns all the reports to @reports' do
         get :show, params
 
-        expect(assigns(:reports)).to match_array([AReport, BReport])
+        expect(assigns(:reports)).to include(AReport, BReport)
       end
 
-      it 'assigns the expected report to @report' do
+      it 'does not add the hidden reports to @reports' do
         get :show, params
 
-        expect(assigns(:report)).to be_a(AReport)
+        expect(assigns(:reports)).to_not include(HiddenReport)
       end
 
     end
