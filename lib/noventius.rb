@@ -10,4 +10,8 @@ require 'noventius/assets'
 
 module Noventius
 
+  mattr_accessor :reports_path do
+    'app/reports'
+  end
+
 end

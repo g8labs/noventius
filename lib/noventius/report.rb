@@ -25,20 +25,26 @@ module Noventius
         @hidden_flag.nil? || !@hidden_flag
       end
 
+      def load_all
+        Dir.glob(File.expand_path("#{Noventius.reports_path}/**/*.rb", Rails.root)).each do |file|
+          require_dependency file
+        end
+      end
+
+      def all
+        load_all unless Rails.application.config.eager_load
+
+        Noventius::Report.descendants
+      end
+
+      def visibles
+        all.select(&:visible?)
+      end
+
     end
 
     def initialize(filter_params = {})
       @filter_params = filter_params
-    end
-
-    def self.all
-      Dir.glob(File.expand_path('app/reports/*.rb', Rails.root)).map do |file|
-        file[%r{app\/reports\/(.*)\.rb}, 1].classify.constantize
-      end
-    end
-
-    def self.visibles
-      all.select(&:visible?)
     end
 
     def result
