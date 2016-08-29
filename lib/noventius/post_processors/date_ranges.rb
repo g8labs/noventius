@@ -4,14 +4,9 @@ module Noventius
 
     class DateRanges
 
-      DAY           = :day
-      MONTH         = :month
-      HOUR          = :hour
-      DAY_OF_WEEK   = :dow
-      MONTH_OF_YEAR = :moy
-
-      STEPS       = [DAY, MONTH, HOUR, DAY_OF_WEEK, MONTH_OF_YEAR]
-      DATE_STEPS  = [DAY, MONTH]
+      STEPS       = [DateComponents::DAY, DateComponents::MONTH, DateComponents::HOUR,
+                     DateComponents::DAY_OF_WEEK, DateComponents::MONTH_OF_YEAR]
+      DATE_STEPS  = [DateComponents::DAY, DateComponents::MONTH]
 
       def initialize(column_index_or_name, step, time_zone = 'America/Montevideo')
         fail ArgumentError, "Step not supported [#{step}]." unless STEPS.include?(step.to_sym)
@@ -82,15 +77,15 @@ module Noventius
 
       def build_range(start_value, end_value)
         case @step
-        when DAY
+        when DateComponents::DAY
           (DayRange.new(start_value)..DayRange.new(end_value)).map(&:date)
-        when MONTH
+        when DateComponents::MONTH
           (MonthRange.new(start_value)..MonthRange.new(end_value)).map(&:date)
-        when HOUR
+        when DateComponents::HOUR
           0..23
-        when DAY_OF_WEEK
+        when DateComponents::DAY_OF_WEEK
           0..6
-        when MONTH_OF_YEAR
+        when DateComponents::MONTH_OF_YEAR
           0..11
         else
           start_value..end_value

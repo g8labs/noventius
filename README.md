@@ -81,11 +81,32 @@ end
 **Column names need to be unique**
 
 #### Supported types
+
 - string
 - integer
 - float
 - datetime
 - date
+
+If you have a column whose type is dynamic, ex: when using the provided `Noventius::Extension::DateQuery`
+extension, you can pass a block instead of a symbol for type and the block will be evaluated in the
+context of the report when it comes time to render it.
+
+#### Sorting
+
+By default sorting is done based on the value shown in the report but its posible to display
+one value and sort by another, this is done with:
+
+```ruby
+class UsersReport < Noventius::Report
+
+  column :day, :integer, value: ->(row) { Date::DAYNAMES[row[0]] }, sort_value: ->(row) { row[0] }
+
+end
+```
+
+In the given example the report would display the day name but sort it by its place on the week thus
+achieving the desired effect.
 
 #### Columns groups
 

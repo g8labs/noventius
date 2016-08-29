@@ -2,8 +2,10 @@ module Noventius
 
   module CellsHelper
 
-    def cell_tag(value)
-      content_tag(:td, format_value(value))
+    def cell_tag(report, row, column)
+      value = column.value(report, row)
+
+      content_tag(:td, format_value(value), cell_tag_options(report, row, column))
     end
 
     def format_value(value)
@@ -15,8 +17,11 @@ module Noventius
       end
     end
 
-    def cell_for_row_column(report, row, column)
-      column.value(report, row)
+    def cell_tag_options(report, row, column)
+      {}.tap do |options|
+        sort_value = column.sort_value(report, row)
+        options[:data] = { text: sort_value } if sort_value
+      end
     end
 
   end

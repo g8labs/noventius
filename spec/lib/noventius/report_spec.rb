@@ -84,8 +84,9 @@ describe '#columns' do
   end
 
   it 'returns the expected columns types' do
-    expect(report.columns.map(&:type)).to match(%i(datetime integer integer integer integer
-                                                   integer string))
+    expect(report.columns.map { |column| column.type(report) }).to match(%i(datetime integer
+                                                                            integer integer integer
+                                                                            integer string))
   end
 
   it 'returns the expected columns labels' do
@@ -117,8 +118,9 @@ describe '#columns' do
       expect(report.columns.map(&:name)).to match(%i(id name role_id created_at updated_at))
     end
 
-    it 'returns string for all columns' do
-      expect(report.columns.map(&:type)).to match(%i(string string string string string))
+    it 'returns string for all column types' do
+      expect(report.columns.map { |column| column.type(report) }).to match(%i(string string string
+                                                                              string string))
     end
 
     it 'returns the columns names as labels' do
